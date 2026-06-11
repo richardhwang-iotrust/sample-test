@@ -1,0 +1,12 @@
+node_modules
+.next
+.DS_Store
+scaffold-app
+.env.local
+.claude/worktrees/
+tsconfig.tsbuildinfo
+
+# 발표 대본·원본 이미지 — 깃 추적 제외
+docs/ppt/대본.*
+docs/ppt/대본_문서.html
+docs/ppt/img/
