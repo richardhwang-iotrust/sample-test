@@ -1,0 +1,2713 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Claude Code 하네스 — 팀 도입 가이드</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" rel="stylesheet">
+<style>
+:root {
+  --cream:        #F2EFE8;
+  --cream-card:   #E8E4DB;
+  --cream-soft:   #DDD8CC;
+  --line:         #D4CFC3;
+  --dark:         #1A1A1A;
+  --dark-soft:    #2A2A2A;
+  --gray:         #8A8780;
+  --gray-light:   #B8B4AA;
+  --orange:       #C9602D;
+  --orange-soft:  #E89556;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #c8c2b3; }
+body {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  color: var(--dark);
+  font-feature-settings: "ss01", "ss02";
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+@page { size: 13.333in 7.5in; margin: 0; }
+
+.slide {
+  width: 1280px; height: 720px;
+  padding: 60px 88px 36px;
+  background: var(--cream);
+  position: relative;
+  display: flex; flex-direction: column;
+  page-break-after: always;
+  break-after: page;
+  overflow: hidden;
+  margin: 24px auto;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+}
+.slide:last-child { page-break-after: avoid; break-after: avoid; }
+@media print {
+  html, body { background: var(--cream); }
+  .slide { margin: 0; box-shadow: none; }
+}
+
+/* ===== 헤더 ===== */
+.slide-head { margin-bottom: 26px; flex-shrink: 0; }
+.head-rule {
+  width: 36px; height: 1px;
+  background: var(--gray);
+  margin-bottom: 14px;
+}
+.head-label {
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  color: var(--gray);
+  font-weight: 500;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.slide-title {
+  font-size: 46px;
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  color: var(--dark);
+  margin-bottom: 10px;
+}
+.slide-subtitle {
+  font-size: 18px;
+  color: var(--gray);
+  font-weight: 400;
+  line-height: 1.5;
+  max-width: 880px;
+}
+.slide-subtitle code {
+  background: var(--cream-card);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+/* ===== 본문 (자동) ===== */
+.slide-body { flex: 1; overflow: hidden; font-size: 16px; line-height: 1.6; }
+.slide-body > *:first-child { margin-top: 0 !important; }
+.slide-body p { margin: 7px 0; font-size: 16px; color: var(--dark); }
+.slide-body p strong { font-weight: 700; }
+.slide-body em { font-style: italic; color: var(--gray); }
+.slide-body h1 { font-size: 21px; margin: 14px 0 6px; font-weight: 600; }
+.slide-body h2 { font-size: 19px; margin: 12px 0 6px; font-weight: 600; }
+.slide-body h3 { font-size: 17px; margin: 10px 0 5px; font-weight: 600; }
+.slide-body ul, .slide-body ol { padding-left: 22px; margin: 6px 0; }
+.slide-body li { margin: 3px 0; font-size: 16px; line-height: 1.55; }
+
+.slide-body table {
+  border-collapse: separate; border-spacing: 0;
+  width: 100%; font-size: 14.5px; margin: 10px 0;
+  background: var(--cream-card);
+  border-radius: 12px; overflow: hidden;
+}
+.slide-body th, .slide-body td { padding: 9px 13px; text-align: left; vertical-align: top; line-height: 1.55; }
+.slide-body th {
+  background: var(--cream-soft);
+  font-weight: 600; font-size: 12.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--line);
+}
+.slide-body tbody tr { border-top: 1px solid rgba(154,150,142,0.18); }
+.slide-body tbody tr:first-child { border-top: none; }
+
+.slide-body code { font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace; font-size: 14px; }
+.slide-body p code, .slide-body li code, .slide-body td code, .slide-body th code, .slide-body blockquote code {
+  background: rgba(26,26,26,0.06);
+  padding: 1px 6px; border-radius: 4px;
+  color: var(--dark);
+}
+.slide-body pre {
+  background: var(--dark);
+  color: var(--cream);
+  padding: 18px 22px;
+  border-radius: 14px;
+  line-height: 1.7;
+  margin: 10px 0;
+  overflow: hidden;
+}
+/* 코드 박스 안 텍스트는 Pretendard로 — 가독성 우선 */
+.slide-body pre code {
+  background: transparent;
+  color: inherit;
+  font-size: 15px;
+  padding: 0;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-weight: 400;
+}
+.slide-body blockquote {
+  background: var(--dark);
+  color: var(--cream);
+  padding: 16px 20px;
+  border-radius: 14px;
+  margin: 10px 0;
+  font-size: 15.5px;
+  line-height: 1.6;
+}
+.slide-body blockquote p { color: var(--cream); margin: 4px 0; font-size: 15.5px; }
+.slide-body blockquote strong { color: #fff; font-weight: 700; }
+.slide-body blockquote em { color: var(--gray-light); }
+.slide-body blockquote code { background: rgba(255,255,255,0.12); color: var(--cream); }
+.slide-body blockquote table { background: rgba(255,255,255,0.05); font-size: 13.5px; }
+.slide-body blockquote th { background: rgba(255,255,255,0.08); color: var(--cream); border-bottom: 1px solid rgba(255,255,255,0.15); }
+.slide-body blockquote td { color: var(--cream); }
+.slide-body blockquote tbody tr { border-top: 1px solid rgba(255,255,255,0.1); }
+.slide-body hr { border: none; border-top: 1px solid var(--line); margin: 14px 0; }
+
+/* dense — 정보 많은 자동 슬라이드 */
+.slide.dense .slide-body { font-size: 14px; line-height: 1.55; }
+.slide.dense .slide-body p, .slide.dense .slide-body li, .slide.dense .slide-body td { font-size: 13.5px; }
+.slide.dense .slide-body th { font-size: 12px; padding: 7px 11px; }
+.slide.dense .slide-body td { padding: 7px 11px; }
+.slide.dense .slide-body table { font-size: 13px; }
+.slide.dense .slide-body pre code { font-size: 12px; line-height: 1.45; }
+.slide.dense .slide-body pre { padding: 12px 16px; }
+.slide.dense .slide-body blockquote { padding: 11px 16px; font-size: 13.5px; }
+.slide.dense .slide-body blockquote p { font-size: 13.5px; margin: 3px 0; }
+.slide.dense .slide-body h1 { font-size: 15px; margin: 8px 0 4px; }
+.slide.dense .slide-body h2 { font-size: 14.5px; margin: 7px 0 3px; }
+.slide.dense .slide-title { font-size: 38px; }
+.slide.dense .slide-head { margin-bottom: 18px; }
+.slide.dense .slide-subtitle { font-size: 16px; }
+
+/* ===== 푸터 ===== */
+.slide-foot {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12px; color: var(--gray-light);
+  letter-spacing: 0.16em;
+  padding-top: 14px; margin-top: 12px;
+  flex-shrink: 0; text-transform: uppercase;
+}
+
+/* ===== 1. 표지 (베이지 + 오렌지 브랜드) ===== */
+.slide.cover-light { padding: 0; background: var(--cream); }
+.cover-top { display: flex; justify-content: space-between; align-items: center; padding: 48px 88px 0; }
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand-dot {
+  width: 32px; height: 32px;
+  background: var(--orange);
+  border-radius: 7px;
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.brand-dot span { color: #fff; font-size: 20px; line-height: 1; }
+.brand-name { font-size: 19px; font-weight: 700; color: var(--dark); letter-spacing: -0.01em; }
+.cover-badge {
+  border: 1.5px solid var(--orange);
+  color: var(--orange);
+  padding: 7px 16px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+}
+.cover-body { flex: 1; padding: 70px 88px 0; display: flex; flex-direction: column; justify-content: center; }
+.slide.cover-light h1 {
+  font-size: 94px;
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--dark);
+  margin-bottom: 26px;
+}
+.cover-sub { font-size: 24px; color: var(--gray); font-weight: 500; margin-bottom: 22px; }
+.cover-rule { width: 64px; height: 4px; background: var(--orange); border-radius: 2px; margin-bottom: 50px; }
+.cover-meta { display: flex; gap: 64px; }
+.cover-meta > div { display: flex; flex-direction: column; gap: 4px; }
+.meta-label { font-size: 12px; color: var(--gray); letter-spacing: 0.06em; }
+.cover-meta strong { font-size: 16px; font-weight: 700; color: var(--dark); }
+.cover-foot { padding: 0 88px 36px; }
+
+/* ===== 2. 목차 ===== */
+.toc-body { margin-top: 0; }
+.toc-row {
+  display: grid;
+  grid-template-columns: 50px 1.1fr 2fr 64px;
+  align-items: baseline;
+  gap: 22px;
+  padding: 7px 0;
+  border-top: 1px solid var(--line);
+  font-size: 16px;
+}
+.toc-row:last-child { border-bottom: 1px solid var(--line); }
+.toc-num { font-size: 13px; letter-spacing: 0.14em; color: var(--gray); }
+.toc-title { font-size: 18px; font-weight: 600; color: var(--dark); letter-spacing: -0.01em; }
+.toc-desc { font-size: 14px; color: var(--gray); }
+.toc-page { font-size: 12.5px; color: var(--gray); text-align: right; letter-spacing: 0.05em; }
+.slide.toc .slide-head { margin-bottom: 18px; }
+
+/* ===== 3. 메신저 ===== */
+.messenger-body { display: grid; grid-template-columns: 1.1fr 1fr; gap: 32px; height: 100%; align-items: stretch; }
+.msg-pane {
+  background: var(--dark);
+  border-radius: 18px;
+  padding: 28px 26px 32px;
+  display: flex; flex-direction: column; gap: 12px;
+  height: 100%;
+  justify-content: center;
+}
+.msg-header { color: var(--cream); font-size: 16px; letter-spacing: 0.04em; margin-bottom: 8px; }
+.msg-bubble {
+  border-radius: 12px;
+  padding: 13px 18px;
+  font-size: 18px;
+  max-width: 80%;
+  line-height: 1.5;
+}
+.msg-me {
+  background: var(--orange-soft);
+  color: #fff;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+  font-weight: 500;
+}
+.msg-ai {
+  background: #fff;
+  color: var(--dark);
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+.msg-pause {
+  align-self: center;
+  color: var(--gray-light);
+  font-size: 15px;
+  font-style: italic;
+  padding: 4px 0;
+}
+.msg-side { display: flex; flex-direction: column; justify-content: center; }
+.msg-side-head {
+  font-size: 38px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--dark);
+  margin-bottom: 14px;
+}
+.msg-side-head strong { color: var(--dark); font-weight: 800; }
+.msg-side-sub { font-size: 19.5px; color: var(--gray); margin-bottom: 24px; }
+.msg-side-list { display: flex; flex-direction: column; gap: 14px; }
+.msg-item { padding-top: 12px; border-top: 1px solid var(--line); }
+.msg-item-title { font-size: 20.5px; font-weight: 700; color: var(--dark); margin-bottom: 4px; }
+.msg-item-desc { font-size: 17.5px; color: var(--gray); }
+
+/* ===== 4. Level 진화 ===== */
+.levels-body { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+.level-grid { display: grid; grid-template-columns: 1fr 30px 1fr 30px 1fr; align-items: end; gap: 4px; margin-bottom: 32px; }
+.level-card { border-radius: 16px; padding: 30px 26px; }
+.level-1 { background: var(--cream-card); min-height: 200px; }
+.level-2 { background: var(--cream-soft); min-height: 240px; }
+.level-3 { background: var(--dark); color: var(--cream); min-height: 280px; }
+.level-eyebrow { font-size: 13px; letter-spacing: 0.28em; color: var(--gray); margin-bottom: 14px; }
+.level-3 .level-eyebrow { color: var(--orange-soft); }
+.level-title { font-size: 30px; font-weight: 700; color: var(--dark); margin-bottom: 12px; letter-spacing: -0.015em; }
+.level-3 .level-title { color: var(--cream); }
+.level-quote { font-size: 15.5px; color: var(--gray); font-style: italic; margin-bottom: 8px; }
+.level-3 .level-quote { color: var(--gray-light); }
+.level-desc { font-size: 15.5px; color: var(--dark); line-height: 1.55; }
+.level-3 .level-desc { color: var(--cream); font-weight: 600; }
+.level-arrow { font-size: 24px; color: var(--gray); text-align: center; align-self: center; padding-bottom: 80px; }
+.levels-bottom {
+  text-align: center; font-size: 20px; color: var(--gray);
+  background: var(--cream-card);
+  padding: 14px 24px;
+  border-radius: 12px;
+  margin-top: 8px;
+}
+.levels-bottom strong { color: var(--dark); font-weight: 700; }
+
+/* ===== 7. Before/After ===== */
+.ba-body { display: flex; flex-direction: column; justify-content: center; height: 100%; gap: 4px; }
+.ba-headers, .ba-row {
+  display: grid; grid-template-columns: 1fr 60px 1fr;
+  align-items: center; gap: 18px;
+}
+.ba-headers { padding-bottom: 6px; border-bottom: 2px solid var(--dark); margin-bottom: 6px; }
+.ba-h { font-size: 13px; letter-spacing: 0.18em; color: var(--gray); text-transform: uppercase; padding: 0 20px; }
+.ba-h-after { color: var(--orange); font-weight: 700; }
+.ba-row { padding: 6px 0; }
+.ba-row:last-child { border-bottom: none; }
+.ba-before {
+  background: var(--cream-card);
+  border-radius: 10px;
+  padding: 12px 18px;
+  font-size: 15.5px;
+  color: var(--gray);
+}
+.ba-arrow { text-align: center; font-size: 22px; color: var(--orange); }
+.ba-after {
+  background: var(--dark);
+  color: var(--cream);
+  border-radius: 10px;
+  padding: 12px 18px;
+  font-size: 15.5px;
+  font-weight: 600;
+}
+
+/* ===== 10. 트리만 (컬러 강조) ===== */
+.tree-body { display: flex; align-items: center; height: 100%; }
+.tree-box {
+  width: 100%;
+  font-size: 16px;
+  line-height: 1.7;
+  padding: 22px 44px;
+  background: var(--dark);
+  color: var(--cream);
+  border-radius: 14px;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-weight: 500;
+}
+.tree-line { white-space: pre; }
+.tree-spacer { height: 8px; }
+.tr-br { color: var(--gray); }
+.tr-folder { color: #FFB987; font-weight: 700; }
+.tr-key { color: #FFB987; font-weight: 700; }
+.tr-cmt { color: var(--gray-light); font-style: italic; font-size: 15px; }
+.tr-plus { color: #7CC480; font-weight: 700; }
+.tr-plugin { color: #6FB3D9; font-weight: 700; }
+
+/* ===== 12. CLAUDE.md 미리보기 ===== */
+.cmd-body { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; height: 100%; }
+.cmd-preview {
+  width: 86%;
+  background: var(--dark);
+  border-radius: 14px;
+  padding: 18px 30px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--cream);
+}
+.cmd-line { display: block; }
+.cmd-spacer { height: 4px; }
+.cmd-h1 { color: var(--orange-soft); font-weight: 700; font-size: 15px; }
+.cmd-h2 { color: var(--orange-soft); font-weight: 600; }
+.cmd-quote { color: #6FB3D9; font-style: italic; }
+.cmd-key {
+  background: rgba(232,149,86,0.18);
+  color: #FFB987;
+  padding: 1px 7px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13.5px;
+}
+.cmd-num { color: #7CC480; font-weight: 700; margin-right: 4px; }
+.cmd-caption {
+  font-size: 17px;
+  color: var(--dark);
+  background: var(--cream-card);
+  padding: 12px 22px;
+  border-radius: 10px;
+}
+.cmd-caption strong { color: var(--orange); font-weight: 700; }
+
+/* ===== 13. CLAUDE.md 3 특징 (원형 번호 카드) ===== */
+.features-body { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; height: 100%; }
+.feat-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 18px; width: 100%; }
+.feat-card {
+  background: var(--cream-card);
+  border-radius: 18px;
+  padding: 28px 24px;
+  display: flex; flex-direction: column;
+  min-height: 240px;
+}
+.feat-warn {
+  background: var(--dark);
+  color: var(--cream);
+  border-radius: 12px;
+  padding: 14px 22px;
+  font-size: 17px;
+  display: flex; align-items: center; gap: 14px;
+  width: 100%;
+  line-height: 1.55;
+}
+.feat-warn-tag {
+  font-size: 13px; letter-spacing: 0.18em; color: var(--orange-soft); font-weight: 700;
+  padding: 4px 10px; border: 1px solid var(--orange-soft); border-radius: 4px; flex-shrink: 0;
+}
+.feat-warn code { background: rgba(255,255,255,0.12); padding: 2px 7px; border-radius: 4px; font-size: 15px; color: var(--cream); }
+.feat-warn strong { font-weight: 700; color: #fff; }
+.feat-num {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  background: var(--cream);
+  color: var(--orange);
+  font-size: 20px;
+  font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 22px;
+  letter-spacing: 0.02em;
+}
+.feat-dark .feat-num { background: var(--dark-soft); color: var(--orange-soft); }
+.feat-title { font-size: 26px; font-weight: 700; color: var(--dark); margin-bottom: 14px; letter-spacing: -0.015em; }
+.feat-dark .feat-title { color: var(--cream); }
+.feat-desc { font-size: 15.5px; color: var(--dark); line-height: 1.6; }
+.feat-dark { background: var(--dark); }
+.feat-dark .feat-desc { color: var(--cream); }
+.feat-desc code { background: rgba(26,26,26,0.06); padding: 1px 6px; border-radius: 4px; font-size: 14px; }
+.feat-dark .feat-desc code { background: rgba(255,255,255,0.12); color: var(--cream); }
+.feat-desc strong { font-weight: 700; }
+
+/* ===== 14. rules 3 카드 ===== */
+.rules-body { display: flex; align-items: center; justify-content: center; height: 100%; }
+.rules-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; width: 100%; }
+.rule-card {
+  background: var(--cream-card);
+  border-radius: 18px;
+  padding: 28px 24px;
+  display: flex; flex-direction: column;
+  min-height: 320px;
+}
+.rule-eyebrow {
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  color: var(--orange);
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+.rule-dark .rule-eyebrow { color: var(--orange-soft); }
+.rule-file {
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--dark);
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+.rule-dark .rule-file { color: var(--cream); border-bottom-color: rgba(255,255,255,0.15); }
+.rule-points { list-style: none; padding: 0; }
+.rule-points li {
+  font-size: 17px;
+  color: var(--dark);
+  margin: 12px 0;
+  padding-left: 16px;
+  position: relative;
+  line-height: 1.55;
+}
+.rule-points li::before {
+  content: '·';
+  position: absolute;
+  left: 0; top: -2px;
+  color: var(--orange);
+  font-size: 20px;
+  font-weight: 800;
+}
+.rule-dark .rule-points li { color: var(--cream); }
+.rule-dark .rule-points li::before { color: var(--orange-soft); }
+.rule-points code { background: rgba(26,26,26,0.08); padding: 1px 5px; border-radius: 3px; font-size: 13.5px; }
+.rule-dark .rule-points code { background: rgba(255,255,255,0.12); color: var(--cream); }
+.rule-dark { background: var(--dark); }
+
+/* ===== 16. skills 출처 (2 카드) ===== */
+.skills-src-body { display: flex; align-items: center; justify-content: center; height: 100%; }
+.skills-src-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; width: 100%; }
+.src-card {
+  background: var(--cream-card);
+  border-radius: 18px;
+  padding: 32px 30px;
+  display: flex; flex-direction: column;
+  min-height: 340px;
+}
+.src-eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.32em;
+  color: var(--orange);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.src-dark .src-eyebrow { color: var(--orange-soft); }
+.src-title { font-size: 30px; font-weight: 700; color: var(--dark); margin-bottom: 22px; letter-spacing: -0.015em; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+.src-dark .src-title { color: var(--cream); border-bottom-color: rgba(255,255,255,0.15); }
+.src-line { font-size: 17px; color: var(--dark); margin: 14px 0; line-height: 1.5; display: flex; gap: 14px; }
+.src-dark .src-line { color: var(--cream); }
+.src-key { font-size: 13px; letter-spacing: 0.12em; color: var(--gray); text-transform: uppercase; min-width: 44px; padding-top: 4px; }
+.src-dark .src-key { color: var(--gray-light); }
+.src-line code { background: rgba(26,26,26,0.08); padding: 2px 7px; border-radius: 4px; font-size: 15.5px; }
+.src-dark .src-line code { background: rgba(255,255,255,0.12); color: var(--cream); }
+.src-dark { background: var(--dark); }
+
+/* ===== 17. skills 6개 그리드 ===== */
+.skills-list-body { display: flex; align-items: center; justify-content: center; height: 100%; }
+.skill-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; width: 100%; }
+.skill-card {
+  background: var(--cream-card);
+  border-radius: 14px;
+  padding: 22px 22px;
+  display: flex; flex-direction: column;
+  gap: 8px;
+  min-height: 175px;
+}
+.skill-tag {
+  align-self: flex-start;
+  font-size: 12.5px;
+  letter-spacing: 0.12em;
+  color: var(--orange);
+  font-weight: 700;
+  text-transform: uppercase;
+  background: rgba(201,96,45,0.1);
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-bottom: 4px;
+}
+.skill-name {
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--dark);
+  word-break: break-all;
+  line-height: 1.3;
+}
+.skill-desc { font-size: 15.5px; color: var(--dark); line-height: 1.55; flex: 1; }
+.skill-trig { font-size: 15px; color: var(--gray); line-height: 1.45; padding-top: 10px; border-top: 1px solid var(--line); }
+.skill-trig code { background: rgba(26,26,26,0.08); padding: 2px 6px; border-radius: 3px; font-size: 14px; }
+
+/* ===== 18. 분업 패턴 ===== */
+.pat-body { display: flex; flex-direction: column; justify-content: center; height: 100%; gap: 22px; }
+.pat-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 14px; }
+.pat-card {
+  background: var(--cream-card);
+  border-radius: 16px;
+  padding: 28px 24px;
+  display: flex; flex-direction: column;
+  min-height: 320px;
+}
+.pat-tag {
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: var(--cream);
+  color: var(--orange);
+  font-size: 22px;
+  font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 22px;
+}
+.pat-dark { background: var(--dark); color: var(--cream); }
+.pat-dark .pat-tag { background: var(--dark-soft); color: var(--orange-soft); }
+.pat-title { font-size: 26px; font-weight: 700; color: var(--dark); margin-bottom: 12px; letter-spacing: -0.01em; }
+.pat-dark .pat-title { color: var(--cream); }
+.pat-when { font-size: 16.5px; color: var(--dark); flex: 1; line-height: 1.55; margin-bottom: 18px; }
+.pat-dark .pat-when { color: var(--cream); }
+.pat-meta { display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; align-items: baseline; padding-top: 14px; border-top: 1px solid var(--line); font-size: 16px; }
+.pat-dark .pat-meta { border-top-color: rgba(255,255,255,0.15); }
+.pat-meta-key { font-size: 13px; letter-spacing: 0.1em; color: var(--gray); text-transform: uppercase; }
+.pat-dark .pat-meta-key { color: var(--gray-light); }
+.pat-cost, .pat-share { font-weight: 700; font-size: 18px; color: var(--dark); }
+.pat-dark .pat-cost, .pat-dark .pat-share { color: var(--cream); }
+.pat-bottom {
+  text-align: center; font-size: 19px; color: var(--gray);
+  background: var(--cream-card);
+  padding: 14px 22px;
+  border-radius: 12px;
+}
+.pat-bottom strong { color: var(--dark); font-weight: 700; }
+
+/* ===== 15. hooks 타임라인 (모두 위쪽) ===== */
+.hk-body { display: flex; align-items: center; height: 100%; }
+.hk-timeline {
+  position: relative;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 14px;
+  align-items: end;
+}
+.hk-line {
+  position: absolute;
+  left: 60px; right: 60px;
+  bottom: 25px;
+  height: 1px;
+  background: var(--gray);
+  z-index: 0;
+}
+.hk-col {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+.hk-card {
+  width: 100%;
+  background: var(--dark);
+  color: var(--cream);
+  border-radius: 14px;
+  padding: 22px 20px;
+  text-align: center;
+  margin-bottom: 14px;
+}
+.hk-when { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 10px; }
+.hk-hook code {
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 15px;
+  background: rgba(232,149,86,0.18);
+  padding: 4px 10px;
+  border-radius: 5px;
+  color: var(--orange-soft);
+  font-weight: 600;
+}
+.hk-desc { font-size: 15.5px; color: var(--cream); margin-top: 12px; line-height: 1.55; }
+.hk-stem {
+  flex: 1;
+  width: 2px;
+  background: var(--gray);
+  min-height: 30px;
+}
+.hk-node {
+  position: relative;
+  width: 50px; height: 50px;
+  border-radius: 50%;
+  background: var(--orange);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+/* ===== 19. agents 6명 카드 ===== */
+.ag-body { display: flex; flex-direction: column; justify-content: center; height: 100%; gap: 18px; }
+.ag-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.ag-card {
+  background: var(--cream-card);
+  border-radius: 14px;
+  padding: 18px 20px;
+  min-height: 130px;
+}
+.ag-name {
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+.ag-role { font-size: 15px; color: var(--dark); margin-bottom: 8px; line-height: 1.5; font-weight: 500; }
+.ag-view { font-size: 13.5px; color: var(--gray); line-height: 1.45; padding-top: 8px; border-top: 1px solid var(--line); }
+.ag-bottom { text-align: center; font-size: 15px; color: var(--gray); padding-top: 4px; }
+.ag-bottom code { background: rgba(26,26,26,0.06); padding: 2px 7px; border-radius: 4px; font-size: 14px; }
+
+/* ===== 20. plugin (단일 섹션) ===== */
+.pl-body { display: flex; flex-direction: column; justify-content: flex-start; height: 100%; gap: 16px; padding-top: 4px; }
+.pl-section { display: flex; flex-direction: column; gap: 10px; }
+.pl-section-only .pl-card { min-height: 180px; padding: 26px 28px; }
+.pl-light { background: var(--cream-card); }
+.pl-name-sm {
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--dark);
+}
+.pl-section-title { font-size: 16px; color: var(--gray); display: flex; align-items: center; gap: 12px; }
+.pl-section-title code { background: rgba(26,26,26,0.06); padding: 1px 6px; border-radius: 4px; font-size: 13px; }
+.pl-required, .pl-optional {
+  font-size: 11.5px;
+  letter-spacing: 0.18em;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 4px;
+}
+.pl-required { background: var(--orange); color: #fff; }
+.pl-optional { background: var(--cream-soft); color: var(--gray); }
+.pl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.pl-card {
+  background: var(--cream-card);
+  border-radius: 14px;
+  padding: 18px 20px;
+  min-height: 100px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.pl-dark { background: var(--dark); color: var(--cream); }
+.pl-name {
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--dark);
+}
+.pl-dark .pl-name { color: var(--cream); }
+.pl-desc { font-size: 17px; color: var(--dark); line-height: 1.55; }
+.pl-dark .pl-desc { color: var(--cream); }
+.pl-cmds { font-size: 15px; display: flex; flex-wrap: wrap; gap: 7px; }
+.pl-cmds code {
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  background: rgba(26,26,26,0.08);
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-size: 14.5px;
+  color: var(--dark);
+}
+.pl-dark .pl-cmds code { background: rgba(255,255,255,0.12); color: var(--cream); }
+
+/* ===== 21. 활용 1 — Anti vs Good + 예시 ===== */
+.u1-body { display: flex; flex-direction: column; justify-content: center; height: 100%; gap: 16px; }
+.u1-grid { display: grid; grid-template-columns: 1fr 50px 1fr; align-items: stretch; gap: 14px; }
+.u1-card {
+  background: var(--cream-card);
+  border-radius: 16px;
+  padding: 22px 24px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.u1-bad { background: var(--cream-card); }
+.u1-good { background: var(--dark); color: var(--cream); }
+.u1-tag { font-size: 13px; letter-spacing: 0.16em; font-weight: 700; color: var(--gray); }
+.u1-good .u1-tag { color: var(--orange-soft); }
+.u1-title { font-size: 26px; font-weight: 700; color: var(--dark); letter-spacing: -0.015em; }
+.u1-good .u1-title { color: var(--cream); }
+.u1-flow { font-size: 15px; color: var(--dark); line-height: 1.65; }
+.u1-good .u1-flow { color: var(--cream); }
+.u1-arrow { font-size: 26px; color: var(--orange); align-self: center; text-align: center; }
+.u1-example {
+  background: var(--cream-card);
+  border-radius: 14px;
+  padding: 18px 22px;
+  display: flex; flex-direction: column; gap: 12px;
+  border: 2px solid var(--orange);
+}
+.u1-ex-row { display: flex; gap: 12px; align-items: flex-start; }
+.u1-ex-label {
+  font-size: 13px; letter-spacing: 0.16em; font-weight: 700;
+  padding: 4px 10px; border-radius: 4px; flex-shrink: 0;
+}
+.u1-ex-user { background: var(--orange); color: #fff; }
+.u1-ex-ai { background: var(--dark); color: var(--cream); }
+.u1-ex-text { font-size: 16px; color: var(--dark); line-height: 1.6; }
+.u1-ex-text code {
+  background: rgba(201,96,45,0.15); color: var(--orange);
+  padding: 2px 7px; border-radius: 4px; font-size: 15px;
+  font-family: 'JetBrains Mono', monospace; font-weight: 600;
+}
+.u1-ex-text strong { font-weight: 700; }
+.u1-ex-q { color: var(--gray); font-size: 15px; }
+
+/* ===== 22. 활용 2 — Generator vs Evaluator ===== */
+.u2-body { display: flex; flex-direction: column; justify-content: center; height: 100%; gap: 22px; }
+.u2-grid { display: grid; grid-template-columns: 1fr 60px 1fr; align-items: stretch; gap: 14px; }
+.u2-card {
+  background: var(--cream-card);
+  border-radius: 16px;
+  padding: 32px 32px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.u2-dark { background: var(--dark); color: var(--cream); }
+.u2-eyebrow { font-size: 13px; letter-spacing: 0.22em; color: var(--orange); font-weight: 700; }
+.u2-dark .u2-eyebrow { color: var(--orange-soft); }
+.u2-title { font-size: 30px; font-weight: 700; color: var(--dark); letter-spacing: -0.015em; }
+.u2-dark .u2-title { color: var(--cream); }
+.u2-tone { font-size: 15px; color: var(--gray); padding-top: 12px; border-top: 1px solid var(--line); }
+.u2-dark .u2-tone { color: var(--gray-light); border-top-color: rgba(255,255,255,0.15); }
+.u2-quote { font-size: 16px; color: var(--dark); font-style: italic; }
+.u2-dark .u2-quote { color: var(--cream); }
+.u2-vs { font-size: 34px; color: var(--orange); align-self: center; text-align: center; font-weight: 300; }
+.u2-bottom {
+  text-align: center; font-size: 19px; color: var(--dark);
+  background: var(--cream-card);
+  padding: 16px 24px;
+  border-radius: 12px;
+}
+.u2-bottom strong { color: var(--orange); font-weight: 700; }
+.u2-tip { display: block; margin-top: 8px; font-size: 16px; color: var(--gray); }
+.u2-tip code { background: rgba(26,26,26,0.08); padding: 2px 7px; border-radius: 4px; font-size: 15px; color: var(--dark); }
+
+/* ===== 23. 활용 3 — 3번 반복 ===== */
+.u3-body { display: flex; flex-direction: column; justify-content: center; height: 100%; gap: 26px; }
+.u3-flow { display: grid; grid-template-columns: 1fr 30px 1fr 30px 1fr 30px 1fr; align-items: stretch; gap: 6px; }
+.u3-step {
+  background: var(--cream-card);
+  border-radius: 14px;
+  padding: 26px 20px;
+  text-align: center;
+  display: flex; flex-direction: column; gap: 14px; justify-content: center;
+  min-height: 220px;
+}
+.u3-stop { background: var(--cream-soft); border: 2px solid var(--orange); }
+.u3-dark { background: var(--dark); color: var(--cream); }
+.u3-week { font-size: 15px; letter-spacing: 0.18em; color: var(--gray); font-weight: 700; }
+.u3-dark .u3-week { color: var(--orange-soft); }
+.u3-action { font-size: 19px; color: var(--dark); line-height: 1.55; font-weight: 600; }
+.u3-action strong { font-size: 30px; color: var(--orange); display: block; margin: 6px 0; }
+.u3-dark .u3-action { color: var(--cream); }
+.u3-arrow { font-size: 28px; color: var(--gray); text-align: center; align-self: center; font-weight: 700; }
+.u3-arrow-final { color: var(--orange); }
+.u3-bottom {
+  text-align: center;
+  background: var(--cream-card);
+  border-radius: 12px;
+  padding: 16px 24px;
+  font-size: 18px;
+  color: var(--dark);
+}
+.u3-bottom code { background: rgba(26,26,26,0.08); padding: 2px 8px; border-radius: 4px; font-size: 16px; }
+.u3-bottom strong { font-weight: 700; color: var(--orange); }
+
+/* ===== 24. 활용 4 — 3번 틀림 ===== */
+.u4-body { display: flex; flex-direction: column; justify-content: center; height: 100%; gap: 22px; }
+.u4-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.u4-card {
+  background: var(--cream-card);
+  border-radius: 16px;
+  padding: 28px 30px;
+  display: flex; flex-direction: column; gap: 14px;
+}
+.u4-dark { background: var(--dark); color: var(--cream); }
+.u4-stage { font-size: 13px; letter-spacing: 0.16em; color: var(--orange); font-weight: 700; }
+.u4-dark .u4-stage { color: var(--orange-soft); }
+.u4-title { font-size: 26px; font-weight: 700; color: var(--dark); letter-spacing: -0.015em; }
+.u4-title code { font-family: 'JetBrains Mono', monospace; font-size: 24px; }
+.u4-dark .u4-title { color: var(--cream); }
+.u4-flow { font-size: 15.5px; color: var(--dark); line-height: 1.7; padding-top: 12px; border-top: 1px solid var(--line); }
+.u4-flow code { background: rgba(26,26,26,0.08); padding: 1px 6px; border-radius: 4px; font-size: 13.5px; }
+.u4-flow strong { font-weight: 700; }
+.u4-dark .u4-flow { color: var(--cream); border-top-color: rgba(255,255,255,0.15); }
+.u4-dark .u4-flow code { background: rgba(255,255,255,0.12); color: var(--cream); }
+.u4-bottom { text-align: center; font-size: 15px; color: var(--gray); padding-top: 4px; }
+.u4-bottom code { background: rgba(26,26,26,0.06); padding: 2px 7px; border-radius: 4px; color: var(--dark); }
+.u4-bottom strong { color: var(--dark); font-weight: 700; }
+.u4-example {
+  background: var(--cream-card);
+  border: 2px dashed var(--orange);
+  border-radius: 14px;
+  padding: 14px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.u4-ex-title { font-size: 12px; letter-spacing: 0.14em; color: var(--orange); font-weight: 700; }
+.u4-ex-row { display: grid; grid-template-columns: 1fr 28px 1fr; gap: 12px; align-items: stretch; }
+.u4-ex-cmd, .u4-ex-result {
+  border-radius: 10px; padding: 11px 14px;
+  font-size: 13.5px; line-height: 1.55;
+}
+.u4-ex-cmd { background: rgba(26,26,26,0.05); color: var(--dark); font-weight: 500; }
+.u4-ex-result { background: var(--dark); color: var(--cream); }
+.u4-ex-cmd code {
+  background: var(--dark); color: var(--orange-soft);
+  padding: 2px 8px; border-radius: 4px; font-size: 12.5px;
+  font-family: 'JetBrains Mono', monospace; font-weight: 600;
+}
+.u4-ex-arrow { font-size: 22px; color: var(--orange); font-weight: 700; text-align: center; align-self: center; }
+.u4-ex-role { display: block; font-size: 10px; letter-spacing: 0.18em; font-weight: 700; opacity: 0.55; margin-bottom: 4px; }
+
+/* ===== 27. 워크플로우 3 시나리오 ===== */
+.wf-body { display: flex; flex-direction: column; justify-content: center; height: 100%; gap: 14px; }
+.wf-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.wf-card {
+  background: var(--cream-card);
+  border-radius: 16px;
+  padding: 18px 20px;
+  display: flex; flex-direction: column;
+  position: relative;
+}
+.wf-dark { background: var(--dark); color: var(--cream); }
+.wf-letter {
+  position: absolute;
+  top: 22px; right: 22px;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--orange);
+  color: #fff;
+  font-size: 24px;
+  font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+}
+.wf-tag { font-size: 11px; letter-spacing: 0.22em; color: var(--gray); font-weight: 700; margin-bottom: 6px; }
+.wf-dark .wf-tag { color: var(--orange-soft); }
+.wf-title { font-size: 22px; font-weight: 700; color: var(--dark); letter-spacing: -0.015em; margin-bottom: 3px; }
+.wf-dark .wf-title { color: var(--cream); }
+.wf-ex { font-size: 13px; color: var(--gray); margin-bottom: 10px; }
+.wf-dark .wf-ex { color: var(--gray-light); }
+.wf-pattern { font-size: 13.5px; color: var(--orange); font-weight: 700; padding: 5px 10px; background: rgba(201,96,45,0.1); border-radius: 6px; align-self: flex-start; margin-bottom: 10px; }
+.wf-dark .wf-pattern { background: rgba(232,149,86,0.15); color: var(--orange-soft); }
+.wf-steps { list-style: none; padding: 0; margin: 0; padding-top: 10px; border-top: 1px solid var(--line); }
+.wf-dark .wf-steps { border-top-color: rgba(255,255,255,0.15); }
+.wf-steps li {
+  font-size: 14px;
+  color: var(--dark);
+  margin: 6px 0;
+  padding-left: 36px;
+  position: relative;
+  line-height: 1.4;
+  counter-increment: wfstep;
+}
+.wf-dark .wf-steps li { color: var(--cream); }
+.wf-steps { counter-reset: wfstep; }
+.wf-steps li::before {
+  content: counter(wfstep);
+  position: absolute;
+  left: 0; top: 0;
+  font-size: 13px;
+  color: var(--orange);
+  font-weight: 700;
+  width: 20px; height: 20px;
+  border: 1.5px solid var(--orange);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  line-height: 1;
+}
+.wf-dark .wf-steps li::before { color: var(--orange-soft); border-color: var(--orange-soft); }
+.wf-bottom {
+  text-align: center; font-size: 14px; color: var(--gray);
+  margin-top: 6px;
+}
+.wf-bottom strong { color: var(--dark); font-weight: 700; }
+
+/* ===== 5. 하네스 정의 + 4가지 구성 ===== */
+.hd-body { display: flex; flex-direction: column; justify-content: center; height: 100%; gap: 22px; }
+.hd-quote {
+  background: var(--dark);
+  color: var(--cream);
+  padding: 16px 22px;
+  border-radius: 14px;
+  font-size: 16px;
+  font-style: italic;
+  text-align: center;
+}
+.hd-quote em { color: var(--orange-soft); font-weight: 600; font-style: normal; }
+.hd-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 14px; }
+.hd-card {
+  background: var(--cream-card);
+  border-radius: 14px;
+  padding: 22px 18px;
+  text-align: center;
+  display: flex; flex-direction: column; gap: 8px;
+  min-height: 180px;
+}
+.hd-icon { font-size: 28px; }
+.hd-name { font-size: 24px; font-weight: 700; color: var(--dark); letter-spacing: -0.015em; }
+.hd-q { font-size: 14.5px; color: var(--gray); }
+.hd-where {
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+.hd-where code {
+  font-family: 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+  font-size: 13px;
+  background: rgba(26,26,26,0.06);
+  padding: 3px 7px;
+  border-radius: 4px;
+  color: var(--dark);
+}
+.hd-bottom { text-align: center; font-size: 16px; color: var(--gray); }
+.hd-bottom code { background: rgba(26,26,26,0.06); padding: 1px 6px; border-radius: 4px; font-size: 14.5px; }
+.hd-bottom strong { color: var(--dark); font-weight: 700; }
+
+/* ===== 9. 적용 4단계 (큰 번호 카드) ===== */
+.as-body { display: flex; flex-direction: column; justify-content: center; height: 100%; gap: 18px; }
+.as-prep {
+  background: var(--cream-card);
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-size: 14.5px;
+  color: var(--dark);
+  display: flex; align-items: center; gap: 12px;
+}
+.as-prep-tag {
+  font-size: 11px; letter-spacing: 0.18em; color: var(--orange); font-weight: 700;
+  padding: 3px 8px; border: 1px solid var(--orange); border-radius: 4px;
+}
+.as-prep code { background: rgba(26,26,26,0.08); padding: 1px 5px; border-radius: 3px; font-size: 13.5px; }
+.as-prep strong { font-weight: 700; }
+.as-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 14px; }
+.as-card {
+  background: var(--cream-card);
+  border-radius: 14px;
+  padding: 22px 20px;
+  display: flex; flex-direction: column; gap: 10px;
+  min-height: 220px;
+}
+.as-dark { background: var(--dark); color: var(--cream); }
+.as-num {
+  font-size: 46px;
+  font-weight: 800;
+  color: var(--orange);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+.as-dark .as-num { color: var(--orange-soft); }
+.as-title { font-size: 18px; font-weight: 700; color: var(--dark); letter-spacing: -0.01em; }
+.as-dark .as-title { color: var(--cream); }
+.as-desc { font-size: 14px; color: var(--dark); line-height: 1.5; }
+.as-desc code { background: rgba(26,26,26,0.08); padding: 1px 5px; border-radius: 3px; font-size: 13px; }
+.as-dark .as-desc { color: var(--cream); }
+.as-code {
+  background: rgba(26,26,26,0.85);
+  color: var(--cream);
+  border-radius: 8px;
+  padding: 11px 13px;
+  font-size: 14px;
+  line-height: 1.55;
+  word-break: break-all;
+}
+.as-code code {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  background: transparent;
+  color: var(--cream);
+  padding: 0;
+}
+.as-code-dark { background: rgba(255,255,255,0.1); }
+
+/* ===== 28. FAQ Q/A 카드 (2열 × 3행) ===== */
+.fq-body { display: flex; flex-direction: column; height: 100%; padding: 0; }
+.fq-grid {
+  flex: 1; min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  gap: 12px;
+  width: 100%;
+}
+.fq-card {
+  background: var(--cream-card);
+  border-radius: 12px;
+  padding: 16px 20px;
+  display: flex; flex-direction: column; gap: 10px;
+  min-height: 0;
+}
+.fq-q {
+  font-size: 16.5px;
+  font-weight: 700;
+  color: var(--dark);
+  letter-spacing: -0.01em;
+  line-height: 1.35;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+.fq-a { font-size: 13.5px; color: var(--dark); line-height: 1.55; }
+.fq-a code { background: rgba(26,26,26,0.08); padding: 1px 6px; border-radius: 4px; font-size: 12.5px; }
+.fq-a strong { font-weight: 700; color: var(--orange); }
+.fq-where { display: inline-block; font-size: 10.5px; letter-spacing: 0.14em; font-weight: 700; color: var(--orange); background: rgba(201,96,45,0.12); padding: 2px 7px; border-radius: 4px; margin-right: 4px; vertical-align: 1px; }
+
+/* ===== 29. 마무리 핵심 그리드 ===== */
+.cl-body-wrap { display: flex; flex-direction: column; justify-content: center; height: 100%; gap: 18px; }
+.cl-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.cl-card {
+  background: var(--cream-card);
+  border-radius: 12px;
+  padding: 16px 18px;
+  min-height: 120px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.cl-dark { background: var(--dark); color: var(--cream); }
+.cl-eyebrow { font-size: 12px; letter-spacing: 0.16em; color: var(--orange); font-weight: 700; }
+.cl-dark .cl-eyebrow { color: var(--orange-soft); }
+.cl-title { font-size: 18px; font-weight: 700; color: var(--dark); letter-spacing: -0.015em; }
+.cl-dark .cl-title { color: var(--cream); }
+.cl-card .cl-body { font-size: 13.5px; color: var(--dark); line-height: 1.55; }
+.cl-card .cl-body code { background: rgba(26,26,26,0.08); padding: 1px 5px; border-radius: 3px; font-size: 12.5px; }
+.cl-dark .cl-body { color: var(--cream); }
+.cl-dark .cl-body code { background: rgba(255,255,255,0.12); color: var(--cream); }
+.cl-actions {
+  background: var(--dark);
+  color: var(--cream);
+  border-radius: 12px;
+  padding: 14px 22px;
+  display: flex; align-items: center; flex-wrap: wrap; gap: 14px;
+  font-size: 14px;
+}
+.cl-actions-title { font-size: 12px; letter-spacing: 0.18em; color: var(--orange-soft); font-weight: 700; }
+.cl-step { display: flex; align-items: center; gap: 8px; }
+.cl-step code { background: rgba(255,255,255,0.12); padding: 1px 6px; border-radius: 4px; font-size: 13px; color: var(--cream); }
+.cl-step-n {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--orange);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+
+/* ===== 30. 다음 시간 6 카드 ===== */
+.nx-body { display: flex; flex-direction: column; justify-content: center; height: 100%; gap: 16px; }
+.nx-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.nx-card {
+  background: var(--cream-card);
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex; flex-direction: column; gap: 8px;
+  min-height: 130px;
+}
+.nx-dark { background: var(--dark); color: var(--cream); }
+.nx-num { font-size: 13px; letter-spacing: 0.16em; color: var(--orange); font-weight: 700; }
+.nx-dark .nx-num { color: var(--orange-soft); }
+.nx-title { font-size: 20px; font-weight: 700; color: var(--dark); letter-spacing: -0.015em; }
+.nx-dark .nx-title { color: var(--cream); }
+.nx-desc { font-size: 14px; color: var(--dark); line-height: 1.55; padding-top: 6px; border-top: 1px solid var(--line); }
+.nx-desc code { background: rgba(26,26,26,0.08); padding: 1px 5px; border-radius: 3px; font-size: 13px; }
+.nx-dark .nx-desc { color: var(--cream); border-top-color: rgba(255,255,255,0.15); }
+.nx-dark .nx-desc code { background: rgba(255,255,255,0.12); color: var(--cream); }
+.nx-tip { color: var(--gray); font-style: italic; font-size: 13px; }
+.nx-dark .nx-tip { color: var(--gray-light); }
+.nx-bottom { text-align: center; font-size: 15px; color: var(--gray); padding-top: 4px; }
+.nx-bottom strong { color: var(--dark); font-weight: 700; }
+.nx-thanks { text-align: center; font-size: 13px; color: var(--gray); letter-spacing: 0.05em; }
+
+/* ===== 6. 좁은/넓은 ===== */
+.nw-body { display: flex; flex-direction: column; justify-content: center; height: 100%; gap: 18px; }
+.nw-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.nw-card { border-radius: 16px; padding: 26px 28px; min-height: 170px; display: flex; flex-direction: column; gap: 14px; }
+.nw-light { background: var(--cream-card); }
+.nw-dark { background: var(--dark); color: var(--cream); }
+.nw-eyebrow { font-size: 13px; letter-spacing: 0.18em; color: var(--gray); font-weight: 700; }
+.nw-dark .nw-eyebrow { color: var(--orange-soft); }
+.nw-content { font-size: 24px; font-weight: 600; color: var(--dark); line-height: 1.45; letter-spacing: -0.015em; }
+.nw-content code { font-family: 'JetBrains Mono', monospace; font-size: 20px; background: rgba(26,26,26,0.08); padding: 1px 8px; border-radius: 4px; }
+.nw-dark .nw-content { color: var(--cream); }
+.nw-dark .nw-content code { background: rgba(255,255,255,0.12); color: var(--cream); }
+.nw-bottom-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr; gap: 8px; }
+.nw-mini { background: var(--cream-card); border-radius: 10px; padding: 10px 12px; }
+.nw-mini-key { font-size: 12px; letter-spacing: 0.1em; color: var(--orange); font-weight: 700; margin-bottom: 4px; }
+.nw-mini-v { font-size: 13px; color: var(--dark); line-height: 1.45; }
+
+/* ===== 11. 강도 그리드 ===== */
+.sg-body { display: flex; flex-direction: column; justify-content: center; height: 100%; gap: 16px; }
+.sg-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.sg-card { background: var(--cream-card); border-radius: 14px; padding: 22px 24px; min-height: 150px; display: flex; flex-direction: column; gap: 10px; }
+.sg-dark { background: var(--dark); color: var(--cream); }
+.sg-name { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700; color: var(--dark); }
+.sg-dark .sg-name { color: var(--cream); }
+.sg-role { font-size: 16px; color: var(--dark); flex: 1; line-height: 1.5; }
+.sg-role code { background: rgba(26,26,26,0.08); padding: 1px 5px; border-radius: 3px; font-size: 15px; }
+.sg-dark .sg-role { color: var(--cream); }
+.sg-dark .sg-role code { background: rgba(255,255,255,0.12); color: var(--cream); }
+.sg-meter { display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid var(--line); }
+.sg-dark .sg-meter { border-top-color: rgba(255,255,255,0.15); }
+.sg-dots { font-size: 14px; color: var(--orange); letter-spacing: 0.05em; }
+.sg-dark .sg-dots { color: var(--orange-soft); }
+.sg-str { font-size: 14px; color: var(--gray); font-weight: 600; }
+.sg-dark .sg-str { color: var(--gray-light); }
+.sg-plugin-loc {
+  background: var(--dark);
+  color: var(--cream);
+  border-radius: 12px;
+  padding: 14px 20px;
+  font-size: 13.5px;
+  display: flex; align-items: center; gap: 12px;
+  line-height: 1.55;
+  flex-wrap: nowrap;
+}
+.sg-loc-tag { font-size: 11px; letter-spacing: 0.18em; color: var(--orange-soft); font-weight: 700; padding: 4px 10px; border: 1px solid var(--orange-soft); border-radius: 4px; flex-shrink: 0; }
+.sg-plugin-loc code { background: rgba(255,255,255,0.12); padding: 2px 7px; border-radius: 4px; font-size: 12.5px; color: var(--cream); white-space: nowrap; }
+.sg-loc-text { flex: 1; }
+
+/* ===== 25. 가볍게 시작 ===== */
+.ls-body { display: flex; flex-direction: column; justify-content: center; height: 100%; gap: 18px; }
+.ls-cycle { display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.ls-step {
+  background: var(--cream-card);
+  border-radius: 999px;
+  padding: 22px 36px;
+  font-size: 22px;
+  color: var(--dark);
+  font-weight: 500;
+}
+.ls-step-em { background: var(--dark); color: var(--cream); font-weight: 700; }
+.ls-arrow { font-size: 28px; color: var(--orange); font-weight: 700; }
+.ls-arrow-loop { color: var(--orange); font-size: 34px; }
+.ls-mid { text-align: center; font-size: 19px; color: var(--gray); }
+.ls-mid strong { color: var(--dark); font-weight: 700; }
+.ls-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.ls-card { background: var(--cream-card); border-radius: 14px; padding: 20px 22px; }
+.ls-good { background: var(--cream-card); }
+.ls-bad { background: var(--dark); color: var(--cream); }
+.ls-card-head { font-size: 16px; font-weight: 700; color: var(--dark); margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+.ls-bad .ls-card-head { color: var(--cream); border-bottom-color: rgba(255,255,255,0.15); }
+.ls-card ul { list-style: none; padding: 0; margin: 0; }
+.ls-card li { font-size: 14.5px; color: var(--dark); margin: 6px 0; padding-left: 12px; position: relative; line-height: 1.5; }
+.ls-card li::before { content: '·'; position: absolute; left: 0; color: var(--orange); font-weight: 800; }
+.ls-bad li { color: var(--cream); }
+.ls-bad li::before { color: var(--orange-soft); }
+
+/* ===== 8. 사람/AI 서랍 ===== */
+.dr-body { display: flex; flex-direction: column; justify-content: center; height: 100%; gap: 18px; }
+.dr-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 22px; align-items: stretch; }
+.dr-tree {
+  background: var(--dark);
+  color: var(--cream);
+  padding: 30px 36px;
+  border-radius: 14px;
+  font-size: 19px;
+  line-height: 2;
+  margin: 0;
+}
+.dr-tree code {
+  font-size: 19px; line-height: 2;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  font-weight: 400;
+}
+.dr-c1 { color: #7CC480; }
+.dr-c2 { color: #E89556; }
+.dr-c3 { color: #6FB3D9; }
+.dr-cards { display: flex; flex-direction: column; gap: 12px; justify-content: center; }
+.dr-card { background: var(--cream-card); border-radius: 12px; padding: 16px 20px; }
+.dr-card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.dr-tag {
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 4px;
+  color: #fff;
+  text-transform: uppercase;
+}
+.dr-tag-human { background: #5BA362; }
+.dr-tag-ai    { background: var(--orange); }
+.dr-tag-both  { background: #4F8AB8; }
+.dr-card-head code { font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 700; color: var(--dark); }
+.dr-card-desc { font-size: 16px; color: var(--dark); line-height: 1.55; }
+.dr-bottom {
+  text-align: center; font-size: 18px; color: var(--gray);
+  background: var(--cream-card);
+  padding: 14px 24px;
+  border-radius: 12px;
+}
+.dr-bottom strong { color: var(--dark); font-weight: 700; }
+
+/* ===== 26. 맞춤화 ===== */
+.cz-body { display: flex; flex-direction: column; justify-content: center; height: 100%; gap: 14px; padding: 14px 0; }
+.cz-section { display: flex; flex-direction: column; gap: 4px; }
+.cz-section-priority {
+  background: var(--dark);
+  border-radius: 12px;
+  padding: 12px 18px 10px;
+}
+.cz-section-head { display: flex; align-items: baseline; gap: 12px; padding-bottom: 6px; margin-bottom: 2px; }
+.cz-section-priority .cz-section-head { border-bottom: 1px solid rgba(255,255,255,0.15); }
+.cz-section:not(.cz-section-priority) .cz-section-head { border-bottom: 1px solid var(--line); }
+.cz-section-tag {
+  font-size: 12px; letter-spacing: 0.12em; font-weight: 700;
+  background: var(--orange);
+  color: #fff;
+  padding: 3px 9px;
+  border-radius: 4px;
+}
+.cz-section-tag-light { background: var(--cream-soft); color: var(--gray); }
+.cz-section-sub { font-size: 12.5px; color: var(--gray); }
+.cz-section-priority .cz-section-sub { color: var(--gray-light); }
+.cz-row {
+  display: grid;
+  grid-template-columns: 180px 70px 1fr;
+  align-items: center;
+  gap: 14px;
+  padding: 3px 0;
+  font-size: 14px;
+}
+.cz-priority { color: var(--cream); }
+.cz-file {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13.5px;
+  background: rgba(26,26,26,0.08);
+  padding: 3px 9px;
+  border-radius: 5px;
+  font-weight: 600;
+  color: var(--dark);
+}
+.cz-priority .cz-file { background: rgba(255,255,255,0.12); color: var(--cream); }
+.cz-loc {
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+  color: var(--gray);
+  text-transform: uppercase;
+}
+.cz-priority .cz-loc { color: var(--gray-light); }
+.cz-edit { font-size: 13.5px; color: var(--dark); line-height: 1.45; }
+.cz-priority .cz-edit { color: var(--cream); }
+.cz-warn {
+  background: var(--cream-card);
+  border-radius: 10px;
+  padding: 9px 14px;
+  font-size: 13px;
+  color: var(--dark);
+  line-height: 1.5;
+}
+.cz-warn code { background: rgba(26,26,26,0.08); padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+.cz-warn strong { font-weight: 700; }
+
+</style>
+</head>
+<body>
+
+<section class="slide cover-light">
+  <div class="cover-top">
+    <div class="brand">
+      <span class="brand-dot"><span>✦</span></span>
+      <span class="brand-name">Claude Code</span>
+    </div>
+    <span class="cover-badge">팀 도입 가이드</span>
+  </div>
+  <div class="cover-body">
+    <h1>Claude Code,<br/>이제 팀 도구로 쓰기</h1>
+    <p class="cover-sub">하네스 설정으로 달라지는 것들</p>
+    <div class="cover-rule"></div>
+    <div class="cover-meta">
+      <div><span class="meta-label">발표자</span><strong>sumin@iotrust.kr</strong></div>
+      <div><span class="meta-label">일시</span><strong>2026</strong></div>
+    </div>
+  </div>
+  <footer class="slide-foot cover-foot">
+    <span>CLAUDE CODE HARNESS · 2026</span>
+    <span>01</span>
+  </footer>
+</section>
+
+<section class="slide toc">
+  <header class="slide-head">
+    <div class="head-rule"></div>
+    <div class="head-label">AGENDA</div>
+    <h2 class="slide-title">오늘 다룰 내용</h2>
+    <p class="slide-subtitle">왜 → 무엇 → 어떻게 → 어떻게 쓰는지</p>
+  </header>
+  <div class="slide-body toc-body">
+    <div class="toc-row">
+      <span class="toc-num">01</span>
+      <span class="toc-title">왜 필요한가</span>
+      <span class="toc-desc">지금 Claude를 쓰면서 겪는 불편함</span>
+      <span class="toc-page">03</span>
+    </div>
+    <div class="toc-row">
+      <span class="toc-num">02</span>
+      <span class="toc-title">하네스란</span>
+      <span class="toc-desc">진화 → 본질 정의 → 좁은/넓은 의미</span>
+      <span class="toc-page">04–06</span>
+    </div>
+    <div class="toc-row">
+      <span class="toc-num">03</span>
+      <span class="toc-title">적용하면 달라지는 것</span>
+      <span class="toc-desc">Before / After</span>
+      <span class="toc-page">07</span>
+    </div>
+    <div class="toc-row">
+      <span class="toc-num">04</span>
+      <span class="toc-title">프로젝트 적용</span>
+      <span class="toc-desc">폴더 분리 + 4단계 설치</span>
+      <span class="toc-page">08–09</span>
+    </div>
+    <div class="toc-row">
+      <span class="toc-num">05</span>
+      <span class="toc-title">구성 한눈에</span>
+      <span class="toc-desc">구조 트리 + 강도 · 플러그인</span>
+      <span class="toc-page">10–11</span>
+    </div>
+    <div class="toc-row">
+      <span class="toc-num">06</span>
+      <span class="toc-title">6개 구성요소</span>
+      <span class="toc-desc">CLAUDE.md · rules · hooks · skills · agents · plugin</span>
+      <span class="toc-page">12–22</span>
+    </div>
+    <div class="toc-row">
+      <span class="toc-num">07</span>
+      <span class="toc-title">활용법 4가지</span>
+      <span class="toc-desc">같이 계획 · 검증 · 자동화 · 규칙화</span>
+      <span class="toc-page">23–26</span>
+    </div>
+    <div class="toc-row">
+      <span class="toc-num">08</span>
+      <span class="toc-title">팀 맞춤화</span>
+      <span class="toc-desc">시작 철학 + 실행 가이드</span>
+      <span class="toc-page">27–28</span>
+    </div>
+    <div class="toc-row">
+      <span class="toc-num">09</span>
+      <span class="toc-title">일상 워크플로우</span>
+      <span class="toc-desc">작은 / 큰 / 다관점 심의</span>
+      <span class="toc-page">29</span>
+    </div>
+    <div class="toc-row">
+      <span class="toc-num">10</span>
+      <span class="toc-title">FAQ · 마무리 · 예고</span>
+      <span class="toc-desc">자주 묻는 질문 + 다음 시간</span>
+      <span class="toc-page">30–32</span>
+    </div></div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>2&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head">
+    <div class="head-rule"></div>
+    <div class="head-label">왜 필요한가 · 01</div>
+    <h2 class="slide-title">지금 어떻게 쓰고 계세요?</h2>
+    <p class="slide-subtitle">익숙한 풍경 — 그리고 그 안의 불편함</p>
+  </header>
+  <div class="slide-body messenger-body">
+    <div class="msg-pane">
+      <div class="msg-header">💬 이런 경험 있으시지 않나요?</div>
+      <div class="msg-bubble msg-me">이 파일은 건드리지 마.</div>
+      <div class="msg-bubble msg-ai">알겠습니다.</div>
+      <div class="msg-pause">… 잠시 후 …</div>
+      <div class="msg-bubble msg-me">어? 화면이 깨졌네.</div>
+      <div class="msg-bubble msg-ai">죄송합니다, 관련 파일을 같이 수정했어요.</div>
+    </div>
+    <div class="msg-side">
+      <h3 class="msg-side-head">대화에서 말한 규칙은<br/><strong>세션이 끝나면 사라집니다.</strong></h3>
+      <p class="msg-side-sub">다음 날 새 대화를 열면 — 처음부터 다시 설명.</p>
+      <div class="msg-side-list">
+        <div class="msg-item">
+          <div class="msg-item-title">팀원마다 다른 커밋 메시지</div>
+          <div class="msg-item-desc">A는 영어 / B는 한국어</div>
+        </div>
+        <div class="msg-item">
+          <div class="msg-item-title">팀원마다 다른 저장 방식</div>
+          <div class="msg-item-desc">A는 main 바로 / B는 분리</div>
+        </div>
+        <div class="msg-item">
+          <div class="msg-item-title">매번 같은 설명 반복</div>
+          <div class="msg-item-desc">"이 프로젝트는…" 처음부터</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>3&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head">
+    <div class="head-rule"></div>
+    <div class="head-label">하네스란 · 02</div>
+    <h2 class="slide-title">"똑똑한 질문" vs "잘 일하는 환경"</h2>
+    <p class="slide-subtitle">AI와 일하는 방식은 3단계로 진화해왔어요</p>
+  </header>
+  <div class="slide-body levels-body">
+    <div class="level-grid">
+      <div class="level-card level-1">
+        <div class="level-eyebrow">LEVEL&nbsp;&nbsp;1</div>
+        <div class="level-title">프롬프트</div>
+        <div class="level-quote">"이렇게 말해봐"</div>
+        <div class="level-desc">질문을 잘 하면 답이 좋아진다</div>
+      </div>
+      <div class="level-arrow">→</div>
+      <div class="level-card level-2">
+        <div class="level-eyebrow">LEVEL&nbsp;&nbsp;2</div>
+        <div class="level-title">배경 알려주기</div>
+        <div class="level-quote">"이 회사·팀은 이래"</div>
+        <div class="level-desc">맥락을 주면 이해한다</div>
+      </div>
+      <div class="level-arrow">→</div>
+      <div class="level-card level-3">
+        <div class="level-eyebrow">LEVEL&nbsp;&nbsp;3</div>
+        <div class="level-title">환경 자체 설계</div>
+        <div class="level-quote">"매번 말 안 해도 되게"</div>
+        <div class="level-desc">— 하네스</div>
+      </div>
+    </div>
+    <p class="levels-bottom">오늘 다룰 건 <strong>Level 3</strong> — AI가 잘 일할 수 있는 환경을 만드는 이야기</p>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>4&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head">
+    <div class="head-rule"></div>
+    <div class="head-label">하네스란 · 02</div>
+    <h2 class="slide-title">하네스란 무엇인가</h2>
+    <p class="slide-subtitle">사람이 매번 안 말해도, AI가 같은 결과를 내는 작업 환경 전체</p>
+  </header>
+  <div class="slide-body hd-body">
+    <div class="hd-quote">
+      <em>하네스(harness)</em> — 말 안장의 가죽끈처럼, AI가 엉뚱한 데로 가지 않게 잡아주는 장치
+    </div>
+    <div class="hd-grid">
+    <div class="hd-card">
+      <div class="hd-icon">📍</div>
+      <div class="hd-name">맥락</div>
+      <div class="hd-q">뭘 하는 곳?</div>
+      <div class="hd-where"><code>CLAUDE.md</code></div>
+    </div>
+    <div class="hd-card">
+      <div class="hd-icon">🚧</div>
+      <div class="hd-name">규칙</div>
+      <div class="hd-q">뭘 하면 안 되나?</div>
+      <div class="hd-where"><code>rules/</code></div>
+    </div>
+    <div class="hd-card">
+      <div class="hd-icon">🧰</div>
+      <div class="hd-name">도구</div>
+      <div class="hd-q">자주 쓰는 절차는?</div>
+      <div class="hd-where"><code>skills/ · agents/</code></div>
+    </div>
+    <div class="hd-card">
+      <div class="hd-icon">🛡</div>
+      <div class="hd-name">검증</div>
+      <div class="hd-q">잘 했는지 누가 확인?</div>
+      <div class="hd-where"><code>hooks/ · /qa · /wrap</code></div>
+    </div></div>
+    <p class="hd-bottom">프롬프트 한 줄도, <code>.claude</code> 폴더 하나도 아닙니다 — <strong>4가지가 한 묶음</strong></p>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>5&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head">
+    <div class="head-rule"></div>
+    <div class="head-label">하네스란 · 02</div>
+    <h2 class="slide-title">하네스의 정의는 생각보다 넓다</h2>
+    <p class="slide-subtitle"><code>.claude</code> 폴더 만이 아니다</p>
+  </header>
+  <div class="slide-body nw-body">
+    <div class="nw-grid">
+      <div class="nw-card nw-light">
+        <div class="nw-eyebrow">좁은 의미</div>
+        <div class="nw-content">CLAUDE.md +<br/><code>.claude/</code> 폴더</div>
+      </div>
+      <div class="nw-card nw-dark">
+        <div class="nw-eyebrow">넓은 의미 — 오늘 다룰 것</div>
+        <div class="nw-content">폴더 구조<br/>+ 문서 분리<br/>+ <code>.claude/</code><br/>+ 플러그인</div>
+      </div>
+    </div>
+    <div class="nw-bottom-grid">
+      <div class="nw-mini"><div class="nw-mini-key">맥락</div><div class="nw-mini-v">CLAUDE.md · docs/</div></div>
+      <div class="nw-mini"><div class="nw-mini-key">규칙</div><div class="nw-mini-v">.claude/rules/</div></div>
+      <div class="nw-mini"><div class="nw-mini-key">도구</div><div class="nw-mini-v">skills/ · agents/ · plugin</div></div>
+      <div class="nw-mini"><div class="nw-mini-key">검증</div><div class="nw-mini-v">hooks/ · /qa · /wrap</div></div>
+      <div class="nw-mini"><div class="nw-mini-key">흔적</div><div class="nw-mini-v">.dev/ (AI 메모)</div></div>
+    </div>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>6&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head">
+    <div class="head-rule"></div>
+    <div class="head-label">적용 효과 · 03</div>
+    <h2 class="slide-title">하네스를 적용하면</h2>
+    <p class="slide-subtitle">같은 프로젝트를 쓰는 사람 모두가 동일한 규칙으로 시작</p>
+  </header>
+  <div class="slide-body ba-body">
+    <div class="ba-headers">
+      <div class="ba-h ba-h-before">적용 전</div>
+      <div></div>
+      <div class="ba-h ba-h-after">적용 후</div>
+    </div>
+    
+    <div class="ba-row">
+      <div class="ba-before">팀원마다 작업 방식이 제각각</div>
+      <div class="ba-arrow">→</div>
+      <div class="ba-after">하나의 "하네스"로 규칙 통일</div>
+    </div>
+    <div class="ba-row">
+      <div class="ba-before">Claude 답변이 매번 달라짐</div>
+      <div class="ba-arrow">→</div>
+      <div class="ba-after">정해진 규칙 안에서 일관된 답변</div>
+    </div>
+    <div class="ba-row">
+      <div class="ba-before">실수로 main 브랜치에 올릴 위험</div>
+      <div class="ba-arrow">→</div>
+      <div class="ba-after">시스템이 자동으로 막아줌</div>
+    </div>
+    <div class="ba-row">
+      <div class="ba-before">잘못해도 모르고 지나감</div>
+      <div class="ba-arrow">→</div>
+      <div class="ba-after">자동으로 감지해서 알려줌</div>
+    </div>
+    <div class="ba-row">
+      <div class="ba-before">새 팀원이 오면 처음부터 설명</div>
+      <div class="ba-arrow">→</div>
+      <div class="ba-after">폴더만 복사하면 바로 동일 환경</div>
+    </div>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>7&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head">
+    <div class="head-rule"></div>
+    <div class="head-label">프로젝트 적용 · 04</div>
+    <h2 class="slide-title">사람 서랍 vs AI 서랍</h2>
+    <p class="slide-subtitle">프로젝트 폴더를 처음부터 사람용 / AI용 으로 나누세요</p>
+  </header>
+  <div class="slide-body dr-body">
+    <div class="dr-grid">
+      <pre class="dr-tree"><code>내 프로젝트/
+├── src/         # 작업 대상
+├── docs/        <span class="dr-c1"># 사람</span>
+├── .dev/        <span class="dr-c2"># AI</span>
+├── .claude/     <span class="dr-c3"># 사람 + AI</span>
+└── CLAUDE.md    # 지도</code></pre>
+      <div class="dr-cards">
+        <div class="dr-card dr-c-human">
+          <div class="dr-card-head"><span class="dr-tag dr-tag-human">사람</span><code>docs/</code></div>
+          <div class="dr-card-desc">회사 규칙 · 브랜드 톤 · 체크리스트 · 공식 양식</div>
+        </div>
+        <div class="dr-card dr-c-ai">
+          <div class="dr-card-head"><span class="dr-tag dr-tag-ai">AI</span><code>.dev/</code></div>
+          <div class="dr-card-desc">작업 중 알게 된 주의점 · 실험 기록 · 디버깅 흔적</div>
+        </div>
+        <div class="dr-card dr-c-both">
+          <div class="dr-card-head"><span class="dr-tag dr-tag-both">사람+AI</span><code>.claude/</code></div>
+          <div class="dr-card-desc">규칙 · 훅 · 스킬 · 에이전트 설정</div>
+        </div>
+      </div>
+    </div>
+    <p class="dr-bottom"><strong>왜 분리?</strong> 섞이면 3개월 뒤 AI가 뭘 봐야 할지 헷갈려서 <strong>품질이 떨어집니다</strong></p>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>8&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head">
+    <div class="head-rule"></div>
+    <div class="head-label">프로젝트 적용 · 04</div>
+    <h2 class="slide-title">내 프로젝트에 적용하기</h2>
+    <p class="slide-subtitle">큰 번호 4단계 — 복사 · 폴더 · 플러그인 · 권한</p>
+  </header>
+  <div class="slide-body as-body">
+    <div class="as-prep">
+      <span class="as-prep-tag">PRE</span>
+      <strong>Slack에 올린 하네스 폴더 다운받기</strong>
+    </div>
+    <div class="as-grid">
+      <div class="as-card">
+        <div class="as-num">1</div>
+        <div class="as-title">파일 복사</div>
+        <div class="as-desc"><code>CLAUDE.md</code> + <code>.claude/</code> 를 프로젝트 맨 위에 붙여넣기</div>
+      </div>
+      <div class="as-card">
+        <div class="as-num">2</div>
+        <div class="as-title">폴더 생성</div>
+        <div class="as-desc"><code>docs/</code> 사람용 공식 문서<br/><code>.dev/</code> AI 작업 메모<br/><code>src/</code> 실제 코드</div>
+      </div>
+      <div class="as-card as-dark">
+        <div class="as-num">3</div>
+        <div class="as-title">플러그인 설치</div>
+        <div class="as-code as-code-dark"><code>/plugin install harness-session@harness-local</code><br/><code>/plugin install session-wrap@team-attention-plugins</code></div>
+      </div>
+      <div class="as-card">
+        <div class="as-num">4</div>
+        <div class="as-title">실행 권한</div>
+        <div class="as-code"><code>chmod +x .claude/hooks/guard.sh</code></div>
+        <div class="as-desc">한 번만</div>
+      </div>
+    </div>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>9&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head">
+    <div class="head-rule"></div>
+    <div class="head-label">구성 한눈에 · 05</div>
+    <h2 class="slide-title">하네스 구조 한눈에 보기</h2>
+    <p class="slide-subtitle">4개 폴더 + 1개 파일 — 이게 전부</p>
+  </header>
+  <div class="slide-body tree-body">
+    <div class="tree-box">
+      <div class="tree-line"><span class="tr-folder">프로젝트 루트/</span></div>
+      <div class="tree-line"><span class="tr-br">├──</span> <span class="tr-key">CLAUDE.md</span>          <span class="tr-cmt">← 핵심 지시 파일 (가장 먼저 읽힘)</span></div>
+      <div class="tree-line"><span class="tr-br">├──</span> <span class="tr-folder">docs/</span>              <span class="tr-cmt">← 사람이 관리 — 비즈니스의 진실</span></div>
+      <div class="tree-line"><span class="tr-br">├──</span> <span class="tr-folder">.dev/</span>              <span class="tr-cmt">← AI가 남기는 작업 흔적</span></div>
+      <div class="tree-line"><span class="tr-br">├──</span> <span class="tr-folder">src/</span>               <span class="tr-cmt">← 실제 코드</span></div>
+      <div class="tree-line"><span class="tr-br">└──</span> <span class="tr-folder">.claude/</span></div>
+      <div class="tree-line">     <span class="tr-br">├──</span> <span class="tr-folder">rules/</span>          <span class="tr-cmt">← 행동 규칙</span></div>
+      <div class="tree-line">     <span class="tr-br">├──</span> <span class="tr-folder">hooks/</span>          <span class="tr-cmt">← 자동 안전장치</span></div>
+      <div class="tree-line">     <span class="tr-br">├──</span> <span class="tr-folder">skills/</span>         <span class="tr-cmt">← 자주 쓰는 절차 모음</span></div>
+      <div class="tree-line">     <span class="tr-br">└──</span> <span class="tr-folder">agents/</span>         <span class="tr-cmt">← 전문 도우미</span></div>
+      <div class="tree-line tree-spacer"></div>
+      <div class="tree-line"><span class="tr-plus">＋</span> <span class="tr-plugin">플러그인</span> <span class="tr-cmt">(탐색기엔 안 보이지만 사용 가능)</span></div>
+      <div class="tree-line">   <span class="tr-key">harness-session</span> · <span class="tr-key">session-wrap</span></div>
+    </div>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>10&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head">
+    <div class="head-rule"></div>
+    <div class="head-label">구성 한눈에 · 05</div>
+    <h2 class="slide-title">구성요소별 영향 강도</h2>
+    <p class="slide-subtitle">같은 하네스 안에서도 작동 강도가 다릅니다</p>
+  </header>
+  <div class="slide-body sg-body">
+    <div class="sg-grid">
+    <div class="sg-card">
+      <div class="sg-name">CLAUDE.md</div>
+      <div class="sg-role">새 대화 시작 시 자동 읽힘</div>
+      <div class="sg-meter">
+        <span class="sg-dots">●●○○○</span>
+        <span class="sg-str">낮음</span>
+      </div>
+    </div>
+    <div class="sg-card">
+      <div class="sg-name">rules/</div>
+      <div class="sg-role">모든 대화에 항상 적용</div>
+      <div class="sg-meter">
+        <span class="sg-dots">●●●○○</span>
+        <span class="sg-str">중간</span>
+      </div>
+    </div>
+    <div class="sg-card">
+      <div class="sg-name">hooks/</div>
+      <div class="sg-role">작업할 때마다 자동 차단·개입</div>
+      <div class="sg-meter">
+        <span class="sg-dots">●●●●●</span>
+        <span class="sg-str">가장 강함</span>
+      </div>
+    </div>
+    <div class="sg-card">
+      <div class="sg-name">skills/</div>
+      <div class="sg-role"><code>/이름</code> 호출 + 자동</div>
+      <div class="sg-meter">
+        <span class="sg-dots">●●○○○</span>
+        <span class="sg-str">낮음</span>
+      </div>
+    </div>
+    <div class="sg-card">
+      <div class="sg-name">agents/</div>
+      <div class="sg-role">큰 요청 시 자동 호출</div>
+      <div class="sg-meter">
+        <span class="sg-dots">●●●○○</span>
+        <span class="sg-str">중간</span>
+      </div>
+    </div>
+    <div class="sg-card sg-dark">
+      <div class="sg-name">plugin</div>
+      <div class="sg-role">위 요소를 묶어 한 번에</div>
+      <div class="sg-meter">
+        <span class="sg-dots">●●●○○</span>
+        <span class="sg-str">중간</span>
+      </div>
+    </div></div>
+    <div class="sg-plugin-loc">
+      <span class="sg-loc-tag">PLUGIN</span>
+      <span class="sg-loc-text">플러그인은 <code>~/.claude/plugins/cache/</code>에 저장 — 탐색기엔 안 보임. <code>/plugin install</code> 로 각자 설치.</span>
+    </div>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>11&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head">
+    <div class="head-rule"></div>
+    <div class="head-label">6요소 · 06 · CLAUDE.md</div>
+    <h2 class="slide-title">CLAUDE.md</h2>
+    <p class="slide-subtitle">가장 먼저 읽히는 핵심 지시 파일</p>
+  </header>
+  <div class="slide-body cmd-body">
+    <div class="cmd-preview">
+      <div class="cmd-line"><span class="cmd-h1"># 프로젝트 작업 규칙</span></div>
+      <div class="cmd-line cmd-spacer"></div>
+      <div class="cmd-line"><span class="cmd-quote">&gt; 이 프로젝트는 Claude Code 하네스 보일러플레이트입니다.</span></div>
+      <div class="cmd-line cmd-spacer"></div>
+      <div class="cmd-line"><span class="cmd-h2">## 세션 시작 시</span></div>
+      <div class="cmd-line">새 대화가 시작되면 반드시 <span class="cmd-key">/start</span> 를 실행한다.</div>
+      <div class="cmd-line cmd-spacer"></div>
+      <div class="cmd-line"><span class="cmd-h2">## 작업 흐름 (순서 엄수)</span></div>
+      <div class="cmd-line"><span class="cmd-num">1.</span> 기능 구현</div>
+      <div class="cmd-line"><span class="cmd-num">2.</span> 로컬 확인 (사용자 확인 요청)</div>
+      <div class="cmd-line"><span class="cmd-num">3.</span> 커밋 &amp; 푸시</div>
+      <div class="cmd-line cmd-spacer"></div>
+      <div class="cmd-line"><span class="cmd-h2">## 큰 기능 요청 시</span></div>
+      <div class="cmd-line"><span class="cmd-key">planner</span> → <span class="cmd-key">designer</span> → <span class="cmd-key">frontend</span> → <span class="cmd-key">backend</span></div>
+      <div class="cmd-line cmd-spacer"></div>
+      <div class="cmd-line"><span class="cmd-h2">## 세부 규칙 참조</span></div>
+      <div class="cmd-line"><span class="cmd-key">.claude/rules/</span> <span style="opacity:0.7;">git.md · communication.md · security.md</span></div>
+    </div>
+    <p class="cmd-caption">자동으로 먼저 읽히는 종이 + <strong>다른 규칙 파일을 함께 데려오는 목차</strong> 역할</p>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>12&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head">
+    <div class="head-rule"></div>
+    <div class="head-label">6요소 · 06 · CLAUDE.md</div>
+    <h2 class="slide-title">CLAUDE.md, 왜 핵심인가</h2>
+    <p class="slide-subtitle">3가지 특징</p>
+  </header>
+  <div class="slide-body features-body">
+    <div class="feat-grid">
+      <div class="feat-card">
+        <div class="feat-num">01</div>
+        <div class="feat-title">자동으로 읽힘</div>
+        <div class="feat-desc">새 대화를 열 때마다 Claude가 가장 먼저 보는 종이. 따로 명령 없이 항상 로드.</div>
+      </div>
+      <div class="feat-card">
+        <div class="feat-num">02</div>
+        <div class="feat-title">규칙의 출발점</div>
+        <div class="feat-desc">여기서 <code>rules/</code> 안 자세한 규칙들을 불러옴. 모든 규칙은 이 파일에서 시작.</div>
+      </div>
+      <div class="feat-card feat-dark">
+        <div class="feat-num">03</div>
+        <div class="feat-title">경제적 — 토큰 절약</div>
+        <div class="feat-desc">매번 대화로 설명하던 걸 한 번에 — 단 너무 길면 오히려 성능 저하. <strong>약 200줄 이내</strong> 유지, 세부 규칙은 <code>rules/</code> 로 분리.</div>
+      </div>
+    </div>
+    <div class="feat-warn">
+      <span class="feat-warn-tag">주의</span>
+      CLAUDE.md는 <strong>권고 사항</strong>이라 Claude가 무시할 수 있어요 — 반드시 지키게 하려면 <code>.claude/hooks/</code>로 강제하세요
+    </div>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>13&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head">
+    <div class="head-rule"></div>
+    <div class="head-label">6요소 · 06 · rules</div>
+    <h2 class="slide-title">rules — 3가지 규칙집</h2>
+    <p class="slide-subtitle">Claude가 일관되게 행동하도록 정해 둔 규칙 모음</p>
+  </header>
+  <div class="slide-body rules-body">
+    <div class="rules-grid">
+      <div class="rule-card">
+        <div class="rule-eyebrow">소통 방식</div>
+        <div class="rule-file">communication.md</div>
+        <ul class="rule-points">
+          <li>에러 → 쉬운 말로 풀이</li>
+          <li>영향 범위 먼저 알림</li>
+          <li>요청 애매하면 질문 먼저</li>
+          <li>완료 시 결과 요약</li>
+        </ul>
+      </div>
+      <div class="rule-card">
+        <div class="rule-eyebrow">저장 · 배포</div>
+        <div class="rule-file">git.md</div>
+        <ul class="rule-points">
+          <li>변경 기록(커밋) 메시지 형식 통일</li>
+          <li>작업 폴더(브랜치) 이름 규칙</li>
+          <li>최종본(main)에 직접 올리기 금지</li>
+          <li>리뷰 후 깔끔하게 합치기</li>
+        </ul>
+      </div>
+      <div class="rule-card rule-dark">
+        <div class="rule-eyebrow">비밀값 · 인증</div>
+        <div class="rule-file">security.md</div>
+        <ul class="rule-points">
+          <li>비밀키 값(예: 구글 로그인 키)은 비밀 보관 파일에 직접</li>
+          <li>안전한 로그인 방식 권장</li>
+          <li>오래된 보안이 약한 토큰은 새로 만들지 않기</li>
+          <li>비밀값이 노출되면 즉시 비활성화</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>14&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head">
+    <div class="head-rule"></div>
+    <div class="head-label">6요소 · 06 · hooks</div>
+    <h2 class="slide-title">hooks</h2>
+    <p class="slide-subtitle">Claude가 작업하기 전·중·후에 자동으로 끼어드는 안전장치</p>
+  </header>
+  <div class="slide-body hk-body">
+    <div class="hk-timeline">
+      
+    <div class="hk-col">
+      <div class="hk-card">
+        <div class="hk-when">명령 실행 직전</div>
+        <div class="hk-hook"><code>guard.sh</code></div>
+        <div class="hk-desc">최종본에 직접 올리기 · 비밀키 섞인 변경 차단</div>
+      </div>
+      <div class="hk-stem"></div>
+      <div class="hk-node">🛡</div>
+    </div>
+    <div class="hk-col">
+      <div class="hk-card">
+        <div class="hk-when">파일 수정 직전</div>
+        <div class="hk-hook"><code>security_reminder</code></div>
+        <div class="hk-desc">비밀 보관 파일 수정 · 코드에 비밀키 박는 행위 차단</div>
+      </div>
+      <div class="hk-stem"></div>
+      <div class="hk-node">🛡</div>
+    </div>
+    <div class="hk-col">
+      <div class="hk-card">
+        <div class="hk-when">파일 수정 직후</div>
+        <div class="hk-hook"><code>post_edit_check</code></div>
+        <div class="hk-desc">설정 파일 형식 깨짐 자동 검사</div>
+      </div>
+      <div class="hk-stem"></div>
+      <div class="hk-node">🛡</div>
+    </div>
+    <div class="hk-col">
+      <div class="hk-card">
+        <div class="hk-when">응답 보내기 직전</div>
+        <div class="hk-hook"><code>stop_review</code></div>
+        <div class="hk-desc">저장 안 한 파일 감지 → 저장 유도</div>
+      </div>
+      <div class="hk-stem"></div>
+      <div class="hk-node">🛡</div>
+    </div>
+      <div class="hk-line"></div>
+    </div>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>15&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head">
+    <div class="head-rule"></div>
+    <div class="head-label">6요소 · 06 · skills</div>
+    <h2 class="slide-title">skills — 자주 쓰는 절차 묶음</h2>
+    <p class="slide-subtitle">두 가지 출처 — 하나는 외부, 하나는 우리 팀이 만든 것</p>
+  </header>
+  <div class="slide-body skills-src-body">
+    <div class="skills-src-grid">
+      <div class="src-card">
+        <div class="src-eyebrow">EXTERNAL</div>
+        <div class="src-title">외부 스킬</div>
+        <div class="src-line"><span class="src-key">출처</span> Anthropic / Supabase · 커뮤니티</div>
+        <div class="src-line"><span class="src-key">설치</span> <code>npx skillsadd</code> · 폴더 복사</div>
+        <div class="src-line"><span class="src-key">수정</span> ❌ 업데이트 충돌 방지</div>
+        <div class="src-line"><span class="src-key">예시</span> <code>frontend-design</code></div>
+      </div>
+      <div class="src-card src-dark">
+        <div class="src-eyebrow">SELF-MADE</div>
+        <div class="src-title">자체 제작 스킬</div>
+        <div class="src-line"><span class="src-key">출처</span> 우리 팀이 직접 작성</div>
+        <div class="src-line"><span class="src-key">설치</span> <code>SKILL.md</code> 추가</div>
+        <div class="src-line"><span class="src-key">수정</span> ✅ 자유롭게 편집</div>
+        <div class="src-line"><span class="src-key">예시</span> <code>start</code> · <code>brainstorming</code></div>
+      </div>
+    </div>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>16&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head">
+    <div class="head-rule"></div>
+    <div class="head-label">6요소 · 06 · skills</div>
+    <h2 class="slide-title">현재 설치된 스킬 6개</h2>
+    <p class="slide-subtitle"><code>/이름</code>으로 직접 호출 + Claude가 자동 발동</p>
+  </header>
+  <div class="slide-body skills-list-body">
+    <div class="skill-grid">
+    <div class="skill-card">
+      <div class="skill-tag">팀 제작</div>
+      <div class="skill-name">start</div>
+      <div class="skill-desc">세션 시작 5단계 체크</div>
+      <div class="skill-trig">새 대화 / <code>/start</code></div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-tag">팀 제작</div>
+      <div class="skill-name">brainstorming</div>
+      <div class="skill-desc">아이디어 확산 + 심층 분석</div>
+      <div class="skill-trig">"아이디어 내줘"</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-tag">팀 제작</div>
+      <div class="skill-name">doc-edit</div>
+      <div class="skill-desc">마크다운 구조 유지 편집</div>
+      <div class="skill-trig">"README 수정"</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-tag">Anthropic</div>
+      <div class="skill-name">frontend-design</div>
+      <div class="skill-desc">일관된 UI 가이드</div>
+      <div class="skill-trig">"UI 만들어줘"</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-tag">Anthropic</div>
+      <div class="skill-name">canvas-design</div>
+      <div class="skill-desc">포스터 · PNG · PDF 비주얼</div>
+      <div class="skill-trig">"포스터 만들어줘"</div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-tag">Supabase</div>
+      <div class="skill-name">supabase-postgres-best-practices</div>
+      <div class="skill-desc">DB 쿼리 · 스키마 최적화</div>
+      <div class="skill-trig">"쿼리 튜닝"</div>
+    </div></div>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>17&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head" style="margin-bottom:14px;">
+    <div class="head-rule"></div>
+    <div class="head-label">6요소 · 06 · skills</div>
+    <h2 class="slide-title">외부 스킬은 어떻게 받나</h2>
+    <p class="slide-subtitle">CLI 명령으로 받거나, VS Code 확장 UI 에서 클릭으로 설치</p>
+  </header>
+  <div class="slide-body" style="display:flex; gap:18px; padding-top:0; height:100%;">
+    <div style="flex:1; display:flex; flex-direction:column; background:var(--cream-card); border-radius:12px; padding:12px 14px; gap:8px; min-height:0;">
+      <div style="display:flex; align-items:baseline; gap:10px;">
+        <span style="font-size:11.5px; letter-spacing:0.18em; color:var(--orange); font-weight:700;">방법 1</span>
+        <span style="font-size:16px; font-weight:700; color:var(--dark);">CLI 명령으로 설치</span>
+      </div>
+      <ol style="font-size:12.5px; line-height:1.5; padding-left:18px; margin:0; color:var(--dark);">
+        <li><code>/plugin marketplace add anthropics/skills</code> — 마켓 등록</li>
+        <li><code>/plugins</code> 입력 → Discover 탭</li>
+        <li>스킬 선택 → Enter 로 설치</li>
+      </ol>
+      <div style="flex:1; display:flex; align-items:center; justify-content:center; min-height:0;">
+        <img src="img/market_place_cli.png" alt="CLI marketplace" style="width:100%; height:100%; border-radius:8px; object-fit:contain;" />
+      </div>
+    </div>
+    <div style="flex:1; display:flex; flex-direction:column; background:var(--cream-card); border-radius:12px; padding:12px 14px; gap:8px; min-height:0;">
+      <div style="display:flex; align-items:baseline; gap:10px;">
+        <span style="font-size:11.5px; letter-spacing:0.18em; color:var(--orange); font-weight:700;">방법 2</span>
+        <span style="font-size:16px; font-weight:700; color:var(--dark);">VS Code 확장 UI</span>
+      </div>
+      <ol style="font-size:12.5px; line-height:1.5; padding-left:18px; margin:0; color:var(--dark);">
+        <li>Claude 채팅창에 <code>/Manage Plugins</code> 입력</li>
+        <li>Available 목록에서 스킬 찾기</li>
+        <li><strong>Install</strong> 버튼 클릭</li>
+      </ol>
+      <div style="flex:1; display:flex; align-items:center; justify-content:center; min-height:0;">
+        <img src="img/market_place_extension.png" alt="Extension marketplace" style="width:100%; height:100%; border-radius:8px; object-fit:contain;" />
+      </div>
+    </div>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>18&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head" style="margin-bottom:14px;">
+    <div class="head-rule"></div>
+    <div class="head-label">6요소 · 06 · skills</div>
+    <h2 class="slide-title">설치 과정과 결과</h2>
+    <p class="slide-subtitle">설치한 스킬은 <code>~/.claude/plugins/cache/.../skills/&lt;스킬이름&gt;/SKILL.md</code> 로 자동 추가 — 이후 별도 명령 없이 인식됩니다</p>
+  </header>
+  <div class="slide-body" style="display:flex; gap:18px; padding-top:0; height:100%;">
+    <div style="flex:3; display:flex; flex-direction:column; background:var(--cream-card); border:1.5px dashed var(--gray-light); border-radius:12px; padding:12px 14px; gap:8px; min-height:0;">
+      <div style="display:flex; align-items:baseline; gap:10px;">
+        <span style="font-size:11.5px; letter-spacing:0.18em; color:var(--orange); font-weight:700;">VIDEO</span>
+        <span style="font-size:16px; font-weight:700; color:var(--dark);">CLI 설치 전체 흐름</span>
+      </div>
+      <div style="flex:1; display:flex; align-items:center; justify-content:center; background:rgba(26,26,26,0.04); border-radius:10px; min-height:0; flex-direction:column; gap:10px;">
+        <div style="font-size:60px; color:var(--gray-light); line-height:1;">▶</div>
+        <div style="font-size:12.5px; color:var(--gray);">영상 첨부 위치 — <code>install_skills_sh.mov</code></div>
+      </div>
+    </div>
+    <div style="flex:2; display:flex; flex-direction:column; background:var(--cream-card); border-radius:12px; padding:12px 14px; gap:8px; min-height:0;">
+      <div style="display:flex; align-items:baseline; gap:10px;">
+        <span style="font-size:11.5px; letter-spacing:0.18em; color:var(--orange); font-weight:700;">RESULT</span>
+        <span style="font-size:16px; font-weight:700; color:var(--dark);">설치 후 — 자동 인식</span>
+      </div>
+      <div style="flex:1; display:flex; flex-direction:column; gap:8px; padding:8px 10px; background:var(--dark); border-radius:10px; color:var(--cream); font-family:'JetBrains Mono','SF Mono',Menlo,monospace; font-size:12px; line-height:1.6; min-height:0; justify-content:center;">
+        <div style="color:var(--orange-soft); font-weight:700;">~/.claude/plugins/cache/</div>
+        <div>&nbsp;&nbsp;└ &lt;마켓이름&gt;/</div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└ &lt;플러그인&gt;/skills/</div>
+        <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└ <span style="color:var(--orange-soft);">&lt;스킬이름&gt;</span>/SKILL.md</div>
+        <div style="margin-top:6px; padding-top:6px; border-top:1px solid rgba(255,255,255,0.15); font-family:'Pretendard',sans-serif; font-size:11.5px; color:rgba(255,238,217,0.75);">→ Claude가 자동 인식 · 별도 등록 불필요</div>
+      </div>
+    </div>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>19&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head">
+    <div class="head-rule"></div>
+    <div class="head-label">6요소 · 06 · agents</div>
+    <h2 class="slide-title">우리 레포의 에이전트 6명</h2>
+    <p class="slide-subtitle">"무조건 체인"이 아니라 "상황에 맞는 패턴 1개"</p>
+  </header>
+  <div class="slide-body ag-body">
+    <div class="ag-grid">
+    <div class="ag-card">
+      <div class="ag-name">planner</div>
+      <div class="ag-role">PRD · 사용자 스토리 · 화면 흐름</div>
+      <div class="ag-view">비즈니스 우선순위 · 기능 범위</div>
+    </div>
+    <div class="ag-card">
+      <div class="ag-name">designer</div>
+      <div class="ag-role">와이어프레임 · 비주얼 컨셉</div>
+      <div class="ag-view">UX 흐름 · 정보 구조 · 접근성</div>
+    </div>
+    <div class="ag-card">
+      <div class="ag-name">frontend</div>
+      <div class="ag-role">React/Next.js UI 코드</div>
+      <div class="ag-view">구현 현실성 · 성능 · 재사용성</div>
+    </div>
+    <div class="ag-card">
+      <div class="ag-name">backend</div>
+      <div class="ag-role">DB 스키마 · API · RLS</div>
+      <div class="ag-view">데이터 설계 · 쿼리 성능 · 보안</div>
+    </div>
+    <div class="ag-card">
+      <div class="ag-name">code-architect</div>
+      <div class="ag-role">기존 패턴 분석 → 설계도</div>
+      <div class="ag-view">아키텍처 일관성 · 의존성 방향</div>
+    </div>
+    <div class="ag-card">
+      <div class="ag-name">idea-researcher</div>
+      <div class="ag-role">아이디어 심층 분석</div>
+      <div class="ag-view">brainstorming 전용 서브</div>
+    </div></div>
+    <p class="ag-bottom">기본 흐름 — <code>planner → designer → frontend → backend</code>  ·  메인 Claude가 종합</p>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>20&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head">
+    <div class="head-rule"></div>
+    <div class="head-label">6요소 · 06 · agents</div>
+    <h2 class="slide-title">agents — 4가지 분업 패턴</h2>
+    <p class="slide-subtitle">복잡한 작업을 Claude가 알아서 분담</p>
+  </header>
+  <div class="slide-body pat-body">
+    <div class="pat-grid">
+    <div class="pat-card">
+      <div class="pat-tag">①</div>
+      <div class="pat-title">Single</div>
+      <div class="pat-when">단순 · 일상 업무</div>
+      <div class="pat-meta">
+        <span class="pat-meta-key">비용</span><span class="pat-cost">1×</span>
+      </div>
+    </div>
+    <div class="pat-card">
+      <div class="pat-tag">②</div>
+      <div class="pat-title">Subagent</div>
+      <div class="pat-when">병렬 · 일부 위임</div>
+      <div class="pat-meta">
+        <span class="pat-meta-key">비용</span><span class="pat-cost">2~3×</span>
+      </div>
+    </div>
+    <div class="pat-card">
+      <div class="pat-tag">③</div>
+      <div class="pat-title">순차 파이프라인</div>
+      <div class="pat-when">단계 명확한 큰 작업</div>
+      <div class="pat-meta">
+        <span class="pat-meta-key">비용</span><span class="pat-cost">~3×</span>
+      </div>
+    </div>
+    <div class="pat-card pat-dark">
+      <div class="pat-tag">④</div>
+      <div class="pat-title">Team Mode</div>
+      <div class="pat-when">여러 역할 서로 대화</div>
+      <div class="pat-meta">
+        <span class="pat-meta-key">비용</span><span class="pat-cost">~7×</span>
+      </div>
+    </div></div>
+    <p class="pat-bottom">대부분은 ① ~ ② 로 끝납니다. ④ Team Mode 는 토큰 비용이 <strong>7배</strong> 라 꼭 필요할 때만.</p>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>21&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head">
+    <div class="head-rule"></div>
+    <div class="head-label">6요소 · 06 · plugin</div>
+    <h2 class="slide-title">Plugin</h2>
+    <p class="slide-subtitle">스킬 · 훅 · 에이전트를 한 묶음으로 — 통째로 받기</p>
+  </header>
+  <div class="slide-body pl-body">
+    <div class="pl-section">
+      <div class="pl-section-title"><span class="pl-required">REQUIRED</span> 현재 레포 의존성 — <code>/plugin install</code> 로 설치</div>
+      <div class="pl-grid">
+        <div class="pl-card pl-dark">
+          <div class="pl-name">harness-session</div>
+          <div class="pl-desc">초기 세팅 · 요구사항 명확화 · 검증 · 오케스트레이션 (총 7개 스킬)</div>
+          <div class="pl-cmds"><code>/scaffold</code> <code>/specify</code> <code>/qa</code> <code>/check-harness</code></div>
+        </div>
+        <div class="pl-card pl-dark">
+          <div class="pl-name">session-wrap</div>
+          <div class="pl-desc">세션 회고 · 반복 패턴 자동 감지</div>
+          <div class="pl-cmds"><code>/wrap</code> <code>/history-insight</code> <code>/session-analyzer</code></div>
+        </div>
+      </div>
+    </div>
+    <div class="pl-section">
+      <div class="pl-section-title"><span class="pl-optional">OPTIONAL</span> 권고 — 살펴보면 좋은 외부 플러그인</div>
+      <div class="pl-grid">
+        <div class="pl-card pl-light">
+          <div class="pl-name-sm">superpowers <span style="font-size:11px; font-weight:400; color:var(--gray); margin-left:4px;">발산→계획→실행 흐름 + TDD·디버깅 스킬</span></div>
+          <div class="pl-cmds"><code>/superpowers:brainstorm</code> <code>:write-plan</code> <code>:execute-plan</code></div>
+          <div style="padding-top:2px;">
+            <span style="font-size:9.5px; letter-spacing:0.18em; font-weight:700; color:var(--orange);">INSTALL</span>
+            <div style="margin-top:3px; font-family:'JetBrains Mono','SF Mono',Menlo,monospace; background:rgba(26,26,26,0.06); padding:5px 8px; border-radius:5px; font-size:10.5px; line-height:1.45; word-break:break-all; color:var(--dark);">/plugin install superpowers@claude-plugins-official</div>
+          </div>
+        </div>
+        <div class="pl-card pl-light">
+          <div class="pl-name-sm">gstack <span style="font-size:11px; font-weight:400; color:var(--gray); margin-left:4px;">23개 역할 기반 스킬 (CEO·디자이너·엔지니어·QA…)</span></div>
+          <div class="pl-cmds"><code>/autoplan</code> <code>/design-shotgun</code> <code>/ship</code> <code>/retro</code></div>
+          <div style="padding-top:2px;">
+            <span style="font-size:9.5px; letter-spacing:0.18em; font-weight:700; color:var(--orange);">INSTALL</span>
+            <div style="margin-top:3px; font-family:'JetBrains Mono','SF Mono',Menlo,monospace; background:rgba(26,26,26,0.06); padding:5px 8px; border-radius:5px; font-size:9.5px; line-height:1.45; word-break:break-all; color:var(--dark);">git clone --single-branch --depth 1 https://github.com/garrytan/gstack.git ~/.claude/skills/gstack &amp;&amp; cd ~/.claude/skills/gstack &amp;&amp; ./setup</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>22&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head">
+    <div class="head-rule"></div>
+    <div class="head-label">활용 · 07 · 1/4</div>
+    <h2 class="slide-title">활용 1 — 같이 계획부터</h2>
+    <p class="slide-subtitle">"해줘"가 아니라 "물어봐"</p>
+  </header>
+  <div class="slide-body u1-body">
+    <div class="u1-grid">
+      <div class="u1-card u1-bad">
+        <div class="u1-tag">❌ ANTI-PATTERN</div>
+        <div class="u1-title">"해줘"</div>
+        <div class="u1-flow">"이거 만들어줘" → AI가 알아서 만듦<br/>→ "아닌데..." → 다시 시킴<br/>→ <strong>시간 낭비</strong></div>
+      </div>
+      <div class="u1-arrow">→</div>
+      <div class="u1-card u1-good">
+        <div class="u1-tag">✅ 좋은 패턴</div>
+        <div class="u1-title">"같이 계획부터"</div>
+        <div class="u1-flow">"~~할 건데 같이 계획 세우자"<br/>→ 사람이 검토·수정·승인<br/>→ <strong>높은 성공률</strong></div>
+      </div>
+    </div>
+    <div class="u1-example">
+      <div class="u1-ex-row">
+        <span class="u1-ex-label u1-ex-user">나</span>
+        <span class="u1-ex-text"><code>/specify</code> 결제 페이지 만들어줘</span>
+      </div>
+      <div class="u1-ex-row">
+        <span class="u1-ex-label u1-ex-ai">AI</span>
+        <div class="u1-ex-text">
+          <strong>계획을 세우겠습니다. 작업 전 3가지 확인:</strong><br/>
+          <span class="u1-ex-q">1. 결제 수단은 카드만? 카카오페이/네이버페이도?</span><br/>
+          <span class="u1-ex-q">2. 비회원 결제 허용?</span><br/>
+          <span class="u1-ex-q">3. 결제 실패 시 재시도는 자동 / 수동?</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>23&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head">
+    <div class="head-rule"></div>
+    <div class="head-label">활용 · 07 · 2/4</div>
+    <h2 class="slide-title">활용 2 — 만든 AI ≠ 평가하는 AI</h2>
+    <p class="slide-subtitle">"자기가 만든 걸 자기가 평가하면, 그저 그런 결과도 자신있게 칭찬한다"</p>
+  </header>
+  <div class="slide-body u2-body">
+    <div class="u2-grid">
+      <div class="u2-card">
+        <div class="u2-eyebrow">GENERATOR</div>
+        <div class="u2-title">만드는 AI</div>
+        <div class="u2-tone">관대함</div>
+        <div class="u2-quote">"이 정도면 괜찮아"</div>
+      </div>
+      <div class="u2-vs">≠</div>
+      <div class="u2-card u2-dark">
+        <div class="u2-eyebrow">EVALUATOR</div>
+        <div class="u2-title">평가하는 AI</div>
+        <div class="u2-tone">회의적으로 튜닝</div>
+        <div class="u2-quote">"이거 정말 맞나?"</div>
+      </div>
+    </div>
+    <div class="u2-bottom">
+      ⚠ 같은 대화창에서 만들고 평가하지 말 것 — <strong>관점을 물리적으로 분리</strong><br/>
+      <span class="u2-tip">실전: 결과물 만든 세션을 <code>/clear</code> 하고 새 세션에서 비판적 검토 · 또는 <code>/qa</code> 스킬</span>
+    </div>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>24&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head">
+    <div class="head-rule"></div>
+    <div class="head-label">활용 · 07 · 3/4</div>
+    <h2 class="slide-title">활용 3 — 3번 반복 → 스킬</h2>
+    <p class="slide-subtitle">같은 작업을 3번째 하게 되면, 그때가 자동화할 타이밍</p>
+  </header>
+  <div class="slide-body u3-body">
+    <div class="u3-flow">
+      <div class="u3-step">
+        <div class="u3-week">1주차</div>
+        <div class="u3-action">월간 리포트<br/>수동 작성</div>
+      </div>
+      <div class="u3-arrow">→</div>
+      <div class="u3-step">
+        <div class="u3-week">2주차</div>
+        <div class="u3-action">같은 형식으로<br/>또 수동 작성</div>
+      </div>
+      <div class="u3-arrow">→</div>
+      <div class="u3-step u3-stop">
+        <div class="u3-week">3주차</div>
+        <div class="u3-action"><strong>STOP</strong><br/>스킬로 만들 시점</div>
+      </div>
+      <div class="u3-arrow u3-arrow-final">⤍</div>
+      <div class="u3-step u3-dark">
+        <div class="u3-week">자동화</div>
+        <div class="u3-action">"리포트 만들어줘"<br/>한마디면 됨</div>
+      </div>
+    </div>
+    <div class="u3-bottom">
+      💡 세션 끝에 <strong><code>/wrap</code></strong> 실행 → 반복 패턴 자동 감지 → 스킬 초안 제안 → 승인만 하면 생성
+    </div>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>25&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head">
+    <div class="head-rule"></div>
+    <div class="head-label">활용 · 07 · 4/4</div>
+    <h2 class="slide-title">활용 4 — 3번 틀림 → 규칙</h2>
+    <p class="slide-subtitle">같은 실수를 3번째 하면, 규칙이 빠진 것</p>
+  </header>
+  <div class="slide-body u4-body">
+    <div class="u4-grid">
+      <div class="u4-card">
+        <div class="u4-stage">1차 — 자동</div>
+        <div class="u4-title">auto-memory</div>
+        <div class="u4-flow">교정 발언 ("아니", "하지 마")<br/>→ <code>memory/feedback_*.md</code> 자동 저장<br/>→ 다음 대화 시작 시 자동 재로드</div>
+      </div>
+      <div class="u4-card u4-dark">
+        <div class="u4-stage">2차 — 반영</div>
+        <div class="u4-title"><code>rules/</code> 에 못박기</div>
+        <div class="u4-flow">같은 실수 3번째면<br/>일회성 기억을 넘어 <strong>규칙 파일에 명시</strong><br/>→ 팀 전체에 자동 적용</div>
+      </div>
+    </div>
+    <div class="u4-example">
+      <div class="u4-ex-title">📝 Rules 에 못박는 명령 예시</div>
+      <div class="u4-ex-row">
+        <div class="u4-ex-cmd">
+          <span class="u4-ex-role">USER 발언</span>
+          "이거 앞으로 <code>.claude/rules/git.md</code> 에 추가해줘<br/>— 커밋 메시지에 <code>Co-Authored-By</code> 넣지 말 것"
+        </div>
+        <div class="u4-ex-arrow">→</div>
+        <div class="u4-ex-result">
+          <span class="u4-ex-role">CLAUDE 동작</span>
+          해당 파일에 규칙 한 줄 추가 + 커밋 → 팀 전체에 자동 적용
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>26&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head">
+    <div class="head-rule"></div>
+    <div class="head-label">팀 맞춤화 · 08</div>
+    <h2 class="slide-title">가볍게 시작, 자주 수정</h2>
+    <p class="slide-subtitle">하네스는 한 번에 완성되지 않습니다</p>
+  </header>
+  <div class="slide-body ls-body">
+    <div class="ls-cycle">
+      <div class="ls-step">느슨하게 시작</div>
+      <div class="ls-arrow">→</div>
+      <div class="ls-step">써본다</div>
+      <div class="ls-arrow">→</div>
+      <div class="ls-step">불편한 부분 발견</div>
+      <div class="ls-arrow">→</div>
+      <div class="ls-step ls-step-em">한 줄 고친다</div>
+      <div class="ls-arrow ls-arrow-loop">↺</div>
+    </div>
+    <p class="ls-mid"><strong>좋은 하네스는 점점 단순해진다</strong> — 복잡해지고 있다면 뭔가 잘못된 것</p>
+    <div class="ls-grid">
+      <div class="ls-card ls-good">
+        <div class="ls-card-head">✅ 잘 가고 있는 신호</div>
+        <ul>
+          <li>같은 지적을 두 번 안 해도 됨</li>
+          <li>실수가 규칙이 된다 (자동 축적)</li>
+          <li>차단 장치가 뭔가를 막고 있다</li>
+          <li>불필요한 규칙이 줄어든다</li>
+        </ul>
+      </div>
+      <div class="ls-card ls-bad">
+        <div class="ls-card-head">⚠ 막힌 신호</div>
+        <ul>
+          <li>확인에 시간이 더 오래 걸린다</li>
+          <li>시켰는데 원하는 결과가 안 나온다</li>
+          <li>규칙·도구가 많은데 잘 안 쓴다</li>
+          <li>설명서가 길어지고 관리가 안 된다</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>27&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head">
+    <div class="head-rule"></div>
+    <div class="head-label">팀 맞춤화 · 08</div>
+    <h2 class="slide-title">내 팀에 맞게 고치는 법</h2>
+    <p class="slide-subtitle">규칙 파일은 전부 텍스트 — 누구나 수정 가능</p>
+  </header>
+  <div class="slide-body cz-body">
+    <div class="cz-section cz-section-priority">
+      <div class="cz-section-head">
+        <span class="cz-section-tag">먼저 이 3개부터</span>
+        <span class="cz-section-sub">도입 첫 주에 손볼 핵심</span>
+      </div>
+      
+    <div class="cz-row cz-priority">
+      <code class="cz-file">CLAUDE.md</code>
+      <span class="cz-loc">루트</span>
+      <span class="cz-edit">프로젝트 설명 · 배포 환경/머지 흐름 주석 해제</span>
+    </div>
+    <div class="cz-row cz-priority">
+      <code class="cz-file">git.md</code>
+      <span class="cz-loc">rules</span>
+      <span class="cz-edit">브랜치 이름 규칙 · 커밋 언어 · 배포 방식</span>
+    </div>
+    <div class="cz-row cz-priority">
+      <code class="cz-file">security.md</code>
+      <span class="cz-loc">rules</span>
+      <span class="cz-edit">팀 비밀값 관리 도구 (1Password / Vault 등)</span>
+    </div>
+    </div>
+    <div class="cz-section">
+      
+    <div class="cz-row">
+      <code class="cz-file">communication.md</code>
+      <span class="cz-loc">rules</span>
+      <span class="cz-edit">팀 용어 · 노션/피그마 링크</span>
+    </div>
+    <div class="cz-row">
+      <code class="cz-file">guard.sh</code>
+      <span class="cz-loc">hooks</span>
+      <span class="cz-edit">추가 차단 명령어 · 비밀값 패턴</span>
+    </div>
+    <div class="cz-row">
+      <code class="cz-file">start/SKILL.md</code>
+      <span class="cz-loc">skills</span>
+      <span class="cz-edit">시작 전 체크사항 (예: Slack)</span>
+    </div>
+    <div class="cz-row">
+      <code class="cz-file">planner.md</code>
+      <span class="cz-loc">agents</span>
+      <span class="cz-edit">에이전트 페르소나 · 출력 형식</span>
+    </div>
+    </div>
+    <p class="cz-warn">⚠ 외부 스킬(<code>frontend-design</code> 등)은 업데이트 충돌 방지 위해 <strong>직접 수정 X</strong>. 팀 제작 스킬(<code>start</code>, <code>brainstorming</code>)은 자유롭게.</p>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>28&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head">
+    <div class="head-rule"></div>
+    <div class="head-label">워크플로우 · 09</div>
+    <h2 class="slide-title">일상 워크플로우</h2>
+    <p class="slide-subtitle">하네스 적용 후 — 세 가지 시나리오</p>
+  </header>
+  <div class="slide-body wf-body">
+    <div class="wf-grid">
+    <div class="wf-card">
+      <div class="wf-letter">A</div>
+      <div class="wf-tag">SMALL</div>
+      <div class="wf-title">작은 요청</div>
+      <div class="wf-ex">버튼 색 · SQL 한 줄</div>
+      <div class="wf-pattern">Single 패턴</div>
+      <ul class="wf-steps"><li>/start</li><li>요청</li><li>Claude 작업</li><li>로컬 확인</li><li>"OK"</li><li>자동 저장</li></ul>
+    </div>
+    <div class="wf-card">
+      <div class="wf-letter">B</div>
+      <div class="wf-tag">BIG</div>
+      <div class="wf-title">큰 요청</div>
+      <div class="wf-ex">대시보드 · 신규 모듈</div>
+      <div class="wf-pattern">순차 파이프라인</div>
+      <ul class="wf-steps"><li>/start</li><li>/specify</li><li>planner→designer→frontend→backend</li><li>단계별 검토</li><li>/qa</li><li>/wrap</li></ul>
+    </div>
+    <div class="wf-card wf-dark">
+      <div class="wf-letter">C</div>
+      <div class="wf-tag">TEAM</div>
+      <div class="wf-title">다관점 심의</div>
+      <div class="wf-ex">기획·구현·아키텍처 다같이</div>
+      <div class="wf-pattern">Team Mode</div>
+      <ul class="wf-steps"><li>/start + /specify</li><li>/agent-orchestrate</li><li>5명 에이전트 심의</li><li>메인 Claude 종합</li><li>/qa</li></ul>
+    </div></div>
+    <p class="wf-bottom">⚠ 팀 모드는 <strong>토큰 비용 ~7배</strong> · 대부분은 B로 충분</p>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>29&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head">
+    <div class="head-rule"></div>
+    <div class="head-label">FAQ · 10</div>
+    <h2 class="slide-title">자주 묻는 질문</h2>
+    <p class="slide-subtitle">비개발자가 자주 묻는 4가지</p>
+  </header>
+  <div class="slide-body fq-body">
+    <div class="fq-grid">
+    <div class="fq-card">
+      <div class="fq-q">Q. 기존 프로젝트에도 적용할 수 있나요?</div>
+      <div class="fq-a">네, 새 프로젝트가 아니어도 됩니다. 이 레포의 <code>.claude/</code> 폴더와 <code>CLAUDE.md</code> 파일을 그대로 복사해 넣으세요. 그 다음 <span class="fq-where">VS CODE · CLAUDE 채팅창</span>에 <code>/plugin install harness-session@harness-local</code> 두 줄만 한 번씩 입력하면 끝나요.</div>
+    </div>
+    <div class="fq-card">
+      <div class="fq-q">Q. 한 번 세팅하면 팀원 모두에게 자동 적용?</div>
+      <div class="fq-a">코드처럼 git 으로 push 하면 팀 전체에 반영됩니다. 단, <strong>플러그인은 각자 한 번씩 설치</strong>해야 해요. <span class="fq-where">VS CODE · CLAUDE 채팅창</span>에서 <code>/plugin install ...</code> 명령을 한 번 실행하면 그 PC 에선 계속 동작합니다.</div>
+    </div>
+    <div class="fq-card">
+      <div class="fq-q">Q. 플러그인이 탐색기에 왜 안 보여요?</div>
+      <div class="fq-a">플러그인은 프로젝트 폴더가 아니라 사용자 홈(<code>~/.claude/</code>)에 캐시 됩니다. 그래서 탐색기에 파일이 없어 보여도 정상이에요. <span class="fq-where">VS CODE · CLAUDE 채팅창</span>에서 <code>/plugin install &lt;이름&gt;</code> 한 번 실행 → 이후엔 자동 인식됩니다.</div>
+    </div>
+    <div class="fq-card">
+      <div class="fq-q">Q. 규칙에 없는 내용은 어떻게 동작하나요?</div>
+      <div class="fq-a">Claude Code 가 평소처럼 알아서 답하고 실행합니다. 별도로 강제하는 규칙이 없으면 일반 동작 그대로예요. 자주 어긋나는 부분이 있으면 <span class="fq-where">VS CODE · CLAUDE 채팅창</span>에서 <code>/wrap</code> 으로 규칙화하면 됩니다.</div>
+    </div>
+    </div>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>30&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head">
+    <div class="head-rule"></div>
+    <div class="head-label">CLOSING</div>
+    <h2 class="slide-title">마무리</h2>
+    <p class="slide-subtitle">오늘 꼭 가져가실 3가지</p>
+  </header>
+  <div class="slide-body" style="display:flex; flex-direction:column; height:100%; gap:22px; padding-top:8px;">
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:18px; flex:1;">
+      <div style="background:var(--cream-card); border-radius:16px; padding:30px 28px; display:flex; flex-direction:column; justify-content:space-between; position:relative; overflow:hidden;">
+        <div style="font-family:'JetBrains Mono','SF Mono',Menlo,monospace; font-size:64px; font-weight:800; color:var(--orange); line-height:1; letter-spacing:-0.02em;">01</div>
+        <div style="display:flex; flex-direction:column; gap:10px; margin-top:14px;">
+          <div style="font-size:11.5px; letter-spacing:0.22em; color:var(--orange); font-weight:700;">범&nbsp;위</div>
+          <div style="font-size:22px; font-weight:800; color:var(--dark); line-height:1.3; letter-spacing:-0.015em;"><code style="background:rgba(26,26,26,0.08); padding:2px 8px; border-radius:5px; font-size:19px;">.claude</code> 만이<br/>하네스가 아닙니다</div>
+          <div style="font-size:13.5px; color:var(--gray); line-height:1.6; margin-top:6px;"><strong style="color:var(--dark);">폴더 구조 분리</strong>에서부터 시작.<br/><code style="background:rgba(26,26,26,0.06); padding:1px 5px; border-radius:3px; font-size:12px;">docs</code> · <code style="background:rgba(26,26,26,0.06); padding:1px 5px; border-radius:3px; font-size:12px;">.dev</code> · <code style="background:rgba(26,26,26,0.06); padding:1px 5px; border-radius:3px; font-size:12px;">src</code> · <code style="background:rgba(26,26,26,0.06); padding:1px 5px; border-radius:3px; font-size:12px;">.claude</code></div>
+        </div>
+      </div>
+      <div style="background:var(--cream-card); border-radius:16px; padding:30px 28px; display:flex; flex-direction:column; justify-content:space-between; position:relative; overflow:hidden;">
+        <div style="font-family:'JetBrains Mono','SF Mono',Menlo,monospace; font-size:64px; font-weight:800; color:var(--orange); line-height:1; letter-spacing:-0.02em;">02</div>
+        <div style="display:flex; flex-direction:column; gap:10px; margin-top:14px;">
+          <div style="font-size:11.5px; letter-spacing:0.22em; color:var(--orange); font-weight:700;">운&nbsp;영</div>
+          <div style="font-size:22px; font-weight:800; color:var(--dark); line-height:1.3; letter-spacing:-0.015em;">가볍게 시작,<br/>자주 수정</div>
+          <div style="font-size:13.5px; color:var(--gray); line-height:1.6; margin-top:6px;">처음부터 완벽하게 만들지 마세요.<br/>잘 굴러가는 하네스는 <strong style="color:var(--dark);">시간이 갈수록 단순</strong>해집니다.</div>
+        </div>
+      </div>
+      <div style="background:var(--dark); color:var(--cream); border-radius:16px; padding:30px 28px; display:flex; flex-direction:column; justify-content:space-between; position:relative; overflow:hidden;">
+        <div style="font-family:'JetBrains Mono','SF Mono',Menlo,monospace; font-size:64px; font-weight:800; color:var(--orange-soft); line-height:1; letter-spacing:-0.02em;">03</div>
+        <div style="display:flex; flex-direction:column; gap:10px; margin-top:14px;">
+          <div style="font-size:11.5px; letter-spacing:0.22em; color:var(--orange-soft); font-weight:700;">루&nbsp;틴</div>
+          <div style="font-size:22px; font-weight:800; color:var(--cream); line-height:1.3; letter-spacing:-0.015em; font-family:'JetBrains Mono','SF Mono',Menlo,monospace;">/start <span style="color:var(--gray-light);">→</span> 작업 <span style="color:var(--gray-light);">→</span> /wrap</div>
+          <div style="font-size:13.5px; color:rgba(255,238,217,0.75); line-height:1.6; margin-top:6px;">시작은 <code style="background:rgba(232,149,86,0.18); color:#FFB987; padding:1px 6px; border-radius:4px; font-size:12px;">/start</code>, 마무리는 <code style="background:rgba(232,149,86,0.18); color:#FFB987; padding:1px 6px; border-radius:4px; font-size:12px;">/wrap</code> 으로<br/>한 사이클을 닫아 주세요.</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex; align-items:center; justify-content:center; gap:18px; padding:18px 32px; background:linear-gradient(90deg, rgba(232,149,86,0.12) 0%, rgba(232,149,86,0.04) 100%); border-radius:14px; border:1.5px solid rgba(232,149,86,0.3);">
+      <div style="font-size:11px; letter-spacing:0.22em; font-weight:700; color:var(--orange); padding:5px 12px; background:var(--cream); border-radius:6px;">오늘&nbsp;끝나고</div>
+      <div style="font-size:17px; font-weight:600; color:var(--dark); letter-spacing:-0.01em;">하네스 폴더 복사 → 플러그인 설치 → 다음 작업 때 <code style="background:var(--dark); color:var(--cream); padding:3px 10px; border-radius:5px; font-family:'JetBrains Mono','SF Mono',Menlo,monospace; font-size:14.5px; font-weight:600;">/start</code> 한 번</div>
+    </div>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>31&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+
+<section class="slide">
+  <header class="slide-head">
+    <div class="head-rule"></div>
+    <div class="head-label">NEXT</div>
+    <h2 class="slide-title">다음 시간 예고</h2>
+    <p class="slide-subtitle">2회차 — 자체 프로젝트에 스킬·에이전트 적용 실습</p>
+  </header>
+  <div class="slide-body nx-body">
+    <div class="nx-grid">
+    <div class="nx-card">
+      <div class="nx-num">01</div>
+      <div class="nx-title">프로젝트 적용</div>
+      <div class="nx-desc">보유 레포에 하네스 설치 후 <code>/start</code> 실행</div>
+    </div>
+    <div class="nx-card">
+      <div class="nx-num">02</div>
+      <div class="nx-title">스킬·에이전트 활용</div>
+      <div class="nx-desc">설치된 스킬·에이전트로 실작업 수행</div>
+    </div>
+    <div class="nx-card">
+      <div class="nx-num">03</div>
+      <div class="nx-title">워크플로우 운용</div>
+      <div class="nx-desc">컨텍스트 관리 · 자동화 루프 · 팀 모드</div>
+    </div>
+    <div class="nx-card nx-dark" style="grid-column: 1 / -1;">
+      <div class="nx-num">04 · 상시 정비</div>
+      <div class="nx-title">규칙화 · hook 설정</div>
+      <div class="nx-desc">반복되는 실수는 <strong>규칙으로 명문화</strong>  ·  반복되는 절차는 <strong>hook 으로 자동화</strong></div>
+    </div></div>
+    <p class="nx-thanks">문의 · sumin@iotrust.kr&nbsp;&nbsp;&nbsp;Thank you.</p>
+  </div>
+  <footer class="slide-foot">
+    <span>CLAUDE&nbsp;&nbsp;CODE&nbsp;&nbsp;HARNESS</span>
+    <span>32&nbsp;&nbsp;·&nbsp;&nbsp;32</span>
+  </footer>
+</section>
+</body>
+</html>
